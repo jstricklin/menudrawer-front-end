@@ -4,6 +4,7 @@ import {Router, Route, nativeHistory} from 'react-router-native'
 const routes = (
     <Router>
         <Route />
+        <Route />
 
     </Router>
     );
