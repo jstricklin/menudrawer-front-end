@@ -8,7 +8,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button } from 'react-native';
-import {Router} from 'react-router-native'
+import {NativeRouter} from 'react-router-native'
 import routes from './routes/Router.js'
 
 const instructions = Platform.select({
@@ -25,12 +25,14 @@ export default class App extends Component<Props> {
     }
     render() {
         return (
-            <View style={styles.container}>
+            <NativeRouter>
+                <View style={styles.container}>
                 <Text style={styles.welcome}>Menu Drawer</Text>
                 <View style={styles.loginBtn}>
                     <Button color="white" title="Sign Up or Log In" onPress={()=> console.log('Thank you')}> </Button>
                 </View>
             </View>
+            </NativeRouter>
             );
     }
 }
