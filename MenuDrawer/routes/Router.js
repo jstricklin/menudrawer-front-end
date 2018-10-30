@@ -1,10 +1,9 @@
 import React from 'react'
 import {Router, Route, nativeHistory} from 'react-router-native'
+import Welcome from '../components/Welcome'
 
 const routes = (
-    <Router>
-        <Route />
-        <Route />
+    <Router history={nativeHistory} >
 
     </Router>
     );
