@@ -5,6 +5,35 @@ import MenuDrawer from './MenuDrawer'
 import Navigator from './Navigator'
 import Search from './Search'
 import Explore from './Explore'
+import Menu from './Menu'
+
+const dummyMenus = [
+    {
+        id: 1,
+        name: "PizzaHut",
+        address: "Denver, CO"
+    },
+    {
+        id: 2,
+        name: "Taco Bell",
+        address: "Denver, CO"
+    },
+    {
+        id: 3,
+        name: "PizzaHut",
+        address: "Denver, CO"
+    },
+    {
+        id: 4,
+        name: "PotBelly",
+        address: "Denver, CO"
+    },
+    {
+        id: 5,
+        name: "Wendy's",
+        address: "Denver, CO"
+    }
+]
 
 const Welcome = () => {
     return (
@@ -17,10 +46,11 @@ export default class Main extends Component<props> {
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route path='/menus' component={MenuDrawer} />
-                    <Route exact path='/' component={Welcome} />
+                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menu={dummyMenus} />} />
+                    <Route exact path='/' render={(props) => <MenuDrawer {...props} menu={dummyMenus} />} />
                     <Route path='/search' component={Search} />
                     <Route path='/explore' component={Explore} />
+                    <Route path='/menu/:id' component={Menu} />
                     <Navigator />
                 </View>
     </NativeRouter>

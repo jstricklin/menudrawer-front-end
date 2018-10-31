@@ -28,7 +28,7 @@ export default class App extends Component<Props> {
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route exact path='/' component={Login} />
+                    <Route exact path='/' component={Main} />
                     <Route path='/welcome' component={Main} />
                 </View>
             </NativeRouter>
