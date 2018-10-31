@@ -9,7 +9,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button } from 'react-native';
 import {NativeRouter, Route} from 'react-router-native'
-import Welcome from './components/Welcome'
+import Main from './components/Main'
 import Login from './components/Login'
 
 const instructions = Platform.select({
@@ -29,7 +29,7 @@ export default class App extends Component<Props> {
             <NativeRouter>
                 <View style={styles.container}>
                     <Route exact path='/' component={Login} />
-                    <Route exact path='/welcome' component={Welcome} />
+                    <Route path='/welcome' component={Main} />
                 </View>
             </NativeRouter>
             );

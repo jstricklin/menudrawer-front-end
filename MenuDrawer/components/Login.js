@@ -6,9 +6,9 @@ export default class Login extends Component<props> {
     render(){
        return (
     <View style={styles.container}>
-        <Text style={styles.welcome}>Menu Drawer</Text>
+        <Text style={styles.login}>Menu Drawer</Text>
         <View style={styles.loginBtn}>
-            <Button color="white" title="Sign Up or Log In" onPress={()=> console.log('Thank you')}> </Button>
+            <Link to='/welcome' ><View style={styles.loginBtn}><Text>Login or Signup</Text></View></Link>
         </View>
     </View>
     )}
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#00475D',
     },
-    welcome: {
+    login: {
         fontSize: 20,
         textAlign: 'center',
         margin: 10,
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
     },
     loginBtn: {
         fontSize: 5,
+        padding: 3,
+        borderRadius: 3,
         backgroundColor: 'skyblue',
     }
 });
