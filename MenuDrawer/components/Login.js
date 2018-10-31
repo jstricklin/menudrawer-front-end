@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Button } from 'react-native';
 import { Link } from 'react-router-native'
 
-export default class Welcome extends Component<props> {
+export default class Login extends Component<props> {
     render(){
        return (
     <View style={styles.container}>
-        <Text style={styles.welcome}> Welcome! Thanks for signing in.</Text>
+        <Text style={styles.welcome}>Menu Drawer</Text>
+        <View style={styles.loginBtn}>
+            <Button color="white" title="Sign Up or Log In" onPress={()=> console.log('Thank you')}> </Button>
+        </View>
     </View>
     )}
 }
