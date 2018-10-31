@@ -1,8 +1,8 @@
-import CONSTANT from './constants'
+import { ADD_COUNT } from './constants'
 let count = 0
 
 export const countClick = ({
-    type: CONSTANT.ADD_COUNT,
-    count++,
+    type: ADD_COUNT,
+    count: count
 })
 
