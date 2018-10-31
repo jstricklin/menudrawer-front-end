@@ -10,6 +10,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button } from 'react-native';
 import {NativeRouter, Route} from 'react-router-native'
 import Welcome from './components/Welcome'
+import Login from './components/Login'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -27,7 +28,8 @@ export default class App extends Component<Props> {
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route exact path='/' component={Welcome} />
+                    <Route exact path='/' component={Login} />
+                    <Route path='/welcome' component={Welcome} />
                 </View>
             </NativeRouter>
             );
