@@ -1,9 +1,18 @@
 import { ADD_COUNT } from '../actions'
 
-const addCount = ( state = [], action ) => {
+const initialState = {
+    count: 0
+}
+
+const addToCount = (state, count) => {
+    newNum = count+1;
+    return
+}
+
+const addCount = ( state = initialState, action ) => {
     switch(action.type) {
         case ADD_COUNT:
-            return action.count;
+            return addToCount(state, action.payload);
         default:
             return state;
     };
