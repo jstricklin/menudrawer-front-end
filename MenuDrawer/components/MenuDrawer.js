@@ -12,13 +12,12 @@ const MenuThumb = (props) => {
 }
 
 const populateMenus = (menus = []) => {
-    console.log(menus)
     return menus.map(menu => <Link key={menu.id} to={`/menu/${menu.id}`} ><MenuThumb menu={menu} /></Link>)
 }
 
 const MenuDrawer = (props) => {
     return (
-        <View style={{alignItems: 'center'}}>
+        <View style={{alignSelf: 'stretch'}}>
             <Text style={styles.title}> Saved Menus </Text>
             <View style={styles.container}>
             <ScrollView style={styles.menuContainer}>
@@ -31,13 +30,13 @@ const MenuDrawer = (props) => {
 
 const styles = StyleSheet.create({
     container: {
+        alignSelf: 'stretch',
         justifyContent: 'flex-start',
-        alignItems: 'center',
         backgroundColor: '#ad6d5d',
-        height: 500,
-        width: 300,
+        height: 650,
     },
     title: {
+        alignSelf: 'center',
         color: 'white',
         marginTop: 10,
         marginBottom: 25,

@@ -7,33 +7,7 @@ import Search from './Search'
 import Explore from './Explore'
 import Menu from './Menu'
 
-const dummyMenus = [
-    {
-        id: 1,
-        name: "PizzaHut",
-        address: "Denver, CO"
-    },
-    {
-        id: 2,
-        name: "Taco Bell",
-        address: "Denver, CO"
-    },
-    {
-        id: 3,
-        name: "PizzaHut",
-        address: "Denver, CO"
-    },
-    {
-        id: 4,
-        name: "PotBelly",
-        address: "Denver, CO"
-    },
-    {
-        id: 5,
-        name: "Wendy's",
-        address: "Denver, CO"
-    }
-]
+const baseURL = 'http://localhost:8080'
 
 const Welcome = () => {
     return (
@@ -42,15 +16,33 @@ const Welcome = () => {
 }
 
 export default class Main extends Component<props> {
+    constructor(props){
+        super(props)
+        this.state = {
+            dummyMenus: [],
+            dummyMenu: {},
+        }
+        this.getDummyMenu = this.getDummyMenu.bind(this)
+    }
+    getDummyMenu(id){
+        fetch(`${baseURL}/menu/${id}`)
+            .then(res => res.json())
+            .then(json => this.setState({dummyMenu: json}))
+    }
+    componentDidMount(){
+        fetch(`${baseURL}/menus`)
+            .then(res => res.json())
+            .then(json => this.setState({dummyMenus: json}))
+    }
     render(){
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menu={dummyMenus} />} />
-                    <Route exact path='/' render={(props) => <MenuDrawer {...props} menu={dummyMenus} />} />
-                    <Route path='/search' component={Search} />
+                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menu={this.state.dummyMenus.menus} />} />
+                    <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
+                    <Route path='/search' render={(props)=> <Search {...props} />} />
                     <Route path='/explore' component={Explore} />
-                    <Route path='/menu/:id' component={Menu} />
+                    <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.dummyMenu.menu} getDummyMenu={this.getDummyMenu} />}/>
                     <Navigator />
                 </View>
     </NativeRouter>
@@ -60,11 +52,12 @@ export default class Main extends Component<props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         backgroundColor: '#00475D',
     },
     welcome: {
+        height: 450,
         fontSize: 20,
         textAlign: 'center',
         margin: 10,
