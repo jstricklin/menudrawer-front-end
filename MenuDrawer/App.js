@@ -7,10 +7,11 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button } from 'react-native';
+import {Platform, StyleSheet, Text, ImageBackground, Button } from 'react-native';
 import {NativeRouter, Route} from 'react-router-native'
 import Main from './components/Main'
 import Login from './components/Login'
+import bg from './assets/heeseon-kim-1114947-unsplash.jpg'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -27,10 +28,10 @@ export default class App extends Component<Props> {
     render() {
         return (
             <NativeRouter>
-                <View style={styles.container}>
-                    <Route exact path='/' component={Main} />
+                <ImageBackground blurRadius={15} resizeMode='cover' source={bg} style={styles.container}>
+                    <Route exact path='/' component={Login} />
                     <Route path='/welcome' component={Main} />
-                </View>
+                </ImageBackground>
             </NativeRouter>
             );
 }

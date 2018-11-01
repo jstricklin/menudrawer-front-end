@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        backgroundColor: '#00475D',
+        // backgroundColor: '#00475D',
+        backgroundColor: 'rgba(0,0,0,0.3)',
     },
     welcome: {
         height: 450,
