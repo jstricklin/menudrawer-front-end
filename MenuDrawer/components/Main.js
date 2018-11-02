@@ -17,7 +17,12 @@ const getMenuURL = "https://us-central1-menu-drawer-8c601.cloudfunctions.net/get
 
 const Welcome = () => {
     return (
-        <Text style={styles.welcome}> Welcome! Thanks for signing in </Text>
+        <View style={{flex:1, width: '100%', justifyContent: 'center'}}>
+            <View style={{backgroundColor: 'rgba(0,0,0,0.5)', padding: 25}}>
+            <Text style={styles.welcome}>Welcome to your </Text>
+            <Text style={styles.titleTxt}>Menu Drawer</Text>
+        </View>
+        </View>
         )
 }
 
@@ -86,8 +91,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
     welcome: {
-        height: 450,
+        // height: 450,
         fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+        color: '#ffffff'
+    },
+    titleTxt: {
+        // height: 400,
+        fontSize: 45,
+        fontWeight:'600',
         textAlign: 'center',
         margin: 10,
         color: '#ffffff'

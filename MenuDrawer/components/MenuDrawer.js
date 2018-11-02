@@ -5,7 +5,7 @@ import { Link } from 'react-router-native'
 const MenuThumb = (props) => {
     return (
         <View style={styles.menuThumb}>
-             <Text>{props.menu.menuData.name}</Text>
+            <Text>{props.menu.menuData.name}</Text>
             <Text>{props.menu.menuData.address}</Text>
         </View>
         )
@@ -18,12 +18,14 @@ const populateMenus = (menus = []) => {
 const MenuDrawer = (props) => {
     return (
         <View style={{alignSelf: 'stretch'}}>
-            <Text style={styles.title}> Saved Menus </Text>
             <View style={styles.container}>
-            <ScrollView style={styles.menuContainer}>
-                {populateMenus(props.menus)}
-            </ScrollView>
-        </View>
+                <Text style={styles.title}> Saved Menus </Text>
+                <View style={styles.menuDrawer}>
+                    <ScrollView style={styles.menuContainer}>
+                        {populateMenus(props.menus)}
+                    </ScrollView>
+                </View>
+            </View>
         </View>
         )
 }
@@ -32,8 +34,13 @@ const styles = StyleSheet.create({
     container: {
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
-        backgroundColor: '#ad6d5d',
+        // backgroundColor: '#ad6d5d',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         height: 650,
+    },
+    menuDrawer: {
+        flex:1,
+        backgroundColor: '#ad6d5d',
     },
     title: {
         alignSelf: 'center',
