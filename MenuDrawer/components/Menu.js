@@ -11,7 +11,7 @@ class Menu extends Component {
     }
     componentDidMount(){
         console.log(this.props.menu)
-        this.props.getDummyMenu(this.props.match.params.id)
+        this.props.getMenu(this.props.match.params.id)
     }
     componentDidUpdate(){
         if (this.state.menu !== this.props.menu){
@@ -22,8 +22,8 @@ class Menu extends Component {
         return (
             <View style={styles.container}>
                 {this.state.menu ? <View style={styles.menu}>
-                    <Text style={styles.title}>{this.state.menu.name}</Text>
-                    <Text>{this.state.menu.address}</Text>
+                    <Text style={styles.title}>{this.state.menu.menuData.name}</Text>
+                    <Text>{this.state.menu.menuData.address}</Text>
                 </View>
                 : null}
             </View>

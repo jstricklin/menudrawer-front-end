@@ -5,8 +5,8 @@ import { Link } from 'react-router-native'
 const MenuThumb = (props) => {
     return (
         <View style={styles.menuThumb}>
-             <Text>{props.menu.name}</Text>
-            <Text>{props.menu.address}</Text>
+             <Text>{props.menu.menuData.name}</Text>
+            <Text>{props.menu.menuData.address}</Text>
         </View>
         )
 }
@@ -21,7 +21,7 @@ const MenuDrawer = (props) => {
             <Text style={styles.title}> Saved Menus </Text>
             <View style={styles.container}>
             <ScrollView style={styles.menuContainer}>
-                {populateMenus(props.menu)}
+                {populateMenus(props.menus)}
             </ScrollView>
         </View>
         </View>

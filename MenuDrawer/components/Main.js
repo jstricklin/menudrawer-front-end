@@ -6,8 +6,14 @@ import Navigator from './Navigator'
 import Search from './Search'
 import Explore from './Explore'
 import Menu from './Menu'
-
+import firebase from 'firebase'
+import firebaseInit from '../firebase.js'
+import 'firebase/database'
 const baseURL = 'http://localhost:8080'
+
+// firebase functions below
+const getUserMenusURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getUserMenus'
+const getMenuURL = "https://us-central1-menu-drawer-8c601.cloudfunctions.net/getMenu"
 
 const Welcome = () => {
     return (
@@ -22,31 +28,53 @@ export default class Main extends Component<props> {
             dummyMenus: [],
             dummyMenu: {},
         }
-        this.getDummyMenu = this.getDummyMenu.bind(this)
+        // this.getDummyMenu = this.getDummyMenu.bind(this)
+        this.getMenu = this.getMenu.bind(this)
     }
-    getDummyMenu(id){
-        fetch(`${baseURL}/menu/${id}`)
+    // getDummyMenu(id){
+    //     fetch(`${baseURL}/menu/${id}`)
+    //         .then(res => res.json())
+    //         .then(json => this.setState({dummyMenu: json}))
+    // }
+    getUserMenus(){
+        console.log('fetching user menus')
+        return fetch(getUserMenusURL)
             .then(res => res.json())
+            .then(json => {
+                for(let menu in json){
+                    console.log('menu', json[menu])
+                }
+                this.setState({ dummyMenus: json.menus});
+                return json.menus
+            })
+    }
+    getMenu(id){
+        fetch(`${getMenuURL}/${id}`)
+            .then(res => res.json())
+            .then(json => { console.log('single menu', json); return json })
             .then(json => this.setState({dummyMenu: json}))
     }
     componentDidMount(){
-        fetch(`${baseURL}/menus`)
-            .then(res => res.json())
-            .then(json => this.setState({dummyMenus: json}))
+        firebaseInit()
+        this.getUserMenus()
+        // .then(console.log(this.state.dummyMenus))
+        // fetch(`${baseURL}/menus`)
+        //     .then(res => res.json())
+        //     .then(json => this.setState({dummyMenus: json}))
     }
     render(){
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menu={this.state.dummyMenus.menus} />} />
+                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
                     <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
                     <Route path='/search' render={(props)=> <Search {...props} />} />
                     <Route path='/explore' component={Explore} />
-                    <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.dummyMenu.menu} getDummyMenu={this.getDummyMenu} />}/>
+                    <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.dummyMenu.menu} getMenu={this.getMenu} />}/>
                     <Navigator />
                 </View>
-    </NativeRouter>
-    )}
+            </NativeRouter>
+            )}
 }
 
 const styles = StyleSheet.create({
