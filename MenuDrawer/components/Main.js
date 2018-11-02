@@ -19,9 +19,9 @@ const Welcome = () => {
     return (
         <View style={{flex:1, width: '100%', justifyContent: 'center'}}>
             <View style={{backgroundColor: 'rgba(0,0,0,0.5)', padding: 25}}>
-            <Text style={styles.welcome}>Welcome to your </Text>
-            <Text style={styles.titleTxt}>Menu Drawer</Text>
-        </View>
+                <Text style={styles.welcome}>Welcome to your </Text>
+                <Text style={styles.titleTxt}>Menu Drawer</Text>
+            </View>
         </View>
         )
 }
@@ -42,30 +42,31 @@ export default class Main extends Component<props> {
     //         .then(json => this.setState({dummyMenu: json}))
     // }
     getUserMenus(){
-        console.log('fetching user menus')
         return fetch(getUserMenusURL)
             .then(res => res.json())
             .then(json => {
-                for(let menu in json){
-                    console.log('menu', json[menu])
-                }
+                // for(let menu in json){
+                //     console.log('menu', json[menu])
+                // }
                 this.setState({ dummyMenus: json.menus});
                 return json.menus
             })
     }
     getMenu(id){
-        fetch(`${getMenuURL}/${id}`)
-            .then(res => res.json())
-            .then(json => { console.log('single menu', json); return json })
-            .then(json => this.setState({dummyMenu: json}))
+        console.log('checking menu')
+        firebase.database().ref('restaurants/').on('value', function(snapshot){
+            console.log('checking..?')
+            console.log('snapshot', snapshot.val())
+        })
+
+        // fetch(`${getMenuURL}/${id}`)
+        //     .then(res => res.json())
+        //     .then(json => { console.log('single menu', json); return json })
+        //     .then(json => this.setState({dummyMenu: json}))
     }
     componentDidMount(){
         firebaseInit()
         this.getUserMenus()
-        // .then(console.log(this.state.dummyMenus))
-        // fetch(`${baseURL}/menus`)
-        //     .then(res => res.json())
-        //     .then(json => this.setState({dummyMenus: json}))
     }
     render(){
         return (

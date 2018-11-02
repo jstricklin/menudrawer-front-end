@@ -10,7 +10,6 @@ class Menu extends Component {
         }
     }
     componentDidMount(){
-        console.log(this.props.menu)
         this.props.getMenu(this.props.match.params.id)
     }
     componentDidUpdate(){
