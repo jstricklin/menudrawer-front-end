@@ -6,14 +6,14 @@ import Navigator from './Navigator'
 import Search from './Search'
 import Explore from './Explore'
 import Menu from './Menu'
+
 import firebase from 'firebase'
 import firebaseInit from '../firebase.js'
 import 'firebase/database'
-const baseURL = 'http://localhost:8080'
 
 // firebase functions below
 const getUserMenusURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getUserMenus'
-const getMenuURL = "https://us-central1-menu-drawer-8c601.cloudfunctions.net/getMenu"
+const getMenuURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getMenu'
 
 const Welcome = () => {
     return (
@@ -53,19 +53,21 @@ export default class Main extends Component<props> {
             })
     }
     getMenu(id){
-        console.log('checking menu')
-        firebase.database().ref('restaurants/').on('value', function(snapshot){
-            console.log('checking..?')
-            console.log('snapshot', snapshot.val())
-        })
+        console.log('checking menu', id)
+        // firebase.database().ref('restaurants/').on('value', function(snapshot){
+        //     console.log('checking..?')
+        //     console.log('snapshot', snapshot.val())
+        // })
 
-        // fetch(`${getMenuURL}/${id}`)
-        //     .then(res => res.json())
-        //     .then(json => { console.log('single menu', json); return json })
-        //     .then(json => this.setState({dummyMenu: json}))
+        fetch(`${getMenuURL}/${id}`)
+            .then(res => res.json())
+            .then(json => { console.log('single menu', json); return json })
+            .then(json => this.setState({dummyMenu: json}))
     }
     componentDidMount(){
-        firebaseInit()
+        if (!firebase.apps.length){
+            firebaseInit()
+        }
         this.getUserMenus()
     }
     render(){

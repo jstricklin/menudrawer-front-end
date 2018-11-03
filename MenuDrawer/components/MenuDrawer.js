@@ -40,7 +40,12 @@ const styles = StyleSheet.create({
     },
     menuDrawer: {
         flex:1,
-        backgroundColor: '#ad6d5d',
+        backgroundColor: 'rgba(75, 25, 25, 0.6)',
+        borderColor: '#ad6d5d',
+        borderRightWidth: 10,
+        borderLeftWidth:10,
+        borderTopWidth:10,
+        borderBottomWidth: 0,
     },
     title: {
         alignSelf: 'center',

@@ -13,6 +13,12 @@ import Main from './components/Main'
 import Login from './components/Login'
 import bg from './assets/heeseon-kim-1114947-unsplash.jpg'
 
+//test firebase below
+
+import firebase from 'firebase'
+import firebaseInit from './firebase.js'
+import 'firebase/database'
+
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
     android:
@@ -22,8 +28,18 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
-    onPressHandler = () => {
-        console.log("clicked!")
+    componentDidMount(){
+        firebaseInit()
+         firebase.database().ref('dummyRestaurants/').on('value', function(snapshot){
+             // console.log('key', Object.values(snapshot.val()))
+             let restArr = []
+             for(let restaurant in snapshot.val()){
+                 console.log('entries in snapshot', Object.keys(snapshot.val()[restaurant]))
+                 console.log('single menu?', Object.values(snapshot.val()[restaurant])
+)
+             }
+             // console.log('single data', snapshot.val())
+         })
     }
     render() {
         return (
