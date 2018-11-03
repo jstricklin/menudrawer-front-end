@@ -30,16 +30,49 @@ type Props = {};
 export default class App extends Component<Props> {
     componentDidMount(){
         firebaseInit()
-         firebase.database().ref('dummyRestaurants/').on('value', function(snapshot){
-             // console.log('key', Object.values(snapshot.val()))
-             let restArr = []
-             for(let restaurant in snapshot.val()){
-                 console.log('entries in snapshot', Object.keys(snapshot.val()[restaurant]))
-                 console.log('single menu?', Object.values(snapshot.val()[restaurant])
-)
-             }
-             // console.log('single data', snapshot.val())
-         })
+        firebase.database().ref('dummyRestaurants/').on('value', (snapshot)=>{
+            console.log('all menus', snapshot.val())
+        })
+        // let name = "Wendy's"
+        // let address = "45 S Washington, Denver CO 80209"
+        // firebase.database().ref('dummyRestaurants/').orderByKey().equalTo(`${name}`).on('value', (snapshot)=>{
+        //     for( name in snapshot.val() ){
+        //         for( menuAddress in snapshot.val()[name]){
+        //             if (address == menuAddress){
+        //                 var newMenu = {
+        //                     name: name,
+        //                     address: address,
+        //                     menu: snapshot.val()[name][menuAddress].menu
+        //                 }
+        //                 console.log(newMenu)
+        //             }
+        //         }
+        //     }
+        // })
+        // get all test below
+        // firebase.database().ref('dummyRestaurants/').on('value', function(snapshot){
+        //     // console.log('key', Object.values(snapshot.val()))
+        //     let menuArr = []
+        //     for(let restaurant in snapshot.val()){
+        //         // console.log('data', snapshot.val()[restaurant])
+        //         // console.log('restaurant', restaurant)
+        //         // console.log('address', Object.keys(snapshot.val()[restaurant]))
+        //         // try to grab menus below
+        //         Object.keys(snapshot.val()[restaurant]).map(addy => {
+        //             // console.log('rest',snapshot.val()[restaurant][addy].menu)
+        //             // console.log(addy)
+        //             let menu = {
+        //                name: restaurant,
+        //                 address: addy,
+        //                 menuData: snapshot.val()[restaurant][addy].menu
+        //             }
+        //             menuArr.push(menu)
+        //         })
+        //         // console.log('single menu', Object.values(snapshot.val()[restaurant])
+        // // )
+        //     }
+        //         console.log('menu array:', menuArr)
+        // })
     }
     render() {
         return (

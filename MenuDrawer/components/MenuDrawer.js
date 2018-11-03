@@ -5,14 +5,14 @@ import { Link } from 'react-router-native'
 const MenuThumb = (props) => {
     return (
         <View style={styles.menuThumb}>
-            <Text>{props.menu.menuData.name}</Text>
-            <Text>{props.menu.menuData.address}</Text>
+            <Text>{props.menu.name}</Text>
+            <Text>{props.menu.address}</Text>
         </View>
         )
 }
 
 const populateMenus = (menus = []) => {
-    return menus.map(menu => <Link key={menu.id} to={`/menu/${menu.id}`} ><MenuThumb menu={menu} /></Link>)
+    return menus.map(menu => <Link key={menu.address} to={`/menu/${menu.name}/${menu.address}`} ><MenuThumb menu={menu} /></Link>)
 }
 
 const MenuDrawer = (props) => {

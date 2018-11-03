@@ -52,14 +52,14 @@ export default class Main extends Component<props> {
                 return json.menus
             })
     }
-    getMenu(id){
-        console.log('checking menu', id)
+    getMenu(name, address){
+        console.log('checking menu', name, address)
         // firebase.database().ref('restaurants/').on('value', function(snapshot){
         //     console.log('checking..?')
         //     console.log('snapshot', snapshot.val())
         // })
 
-        fetch(`${getMenuURL}/${id}`)
+        fetch(`${getMenuURL}/${name}/${address}`)
             .then(res => res.json())
             .then(json => { console.log('single menu', json); return json })
             .then(json => this.setState({dummyMenu: json}))
@@ -78,7 +78,7 @@ export default class Main extends Component<props> {
                     <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
                     <Route path='/search' render={(props)=> <Search {...props} />} />
                     <Route path='/explore' component={Explore} />
-                    <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.dummyMenu.menu} getMenu={this.getMenu} />}/>
+                    <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} />}/>
                     <Navigator />
                 </View>
             </NativeRouter>
