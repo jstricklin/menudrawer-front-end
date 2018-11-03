@@ -5,6 +5,7 @@ import MapView, { Marker } from 'react-native-maps'
 // import { baseURL } from '../credentials.env'
 const { width, height  } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
+import styles from '../styles'
 
 const Map = (props) => {
     return (
@@ -13,7 +14,7 @@ const Map = (props) => {
                 {props.locationCoords.latitude}, {props.locationCoords.longitude}
             </Text>
             <View style={{ height: 200, width: 200 }}>
-                <MapView style={{color: 'white'}}
+                <MapView style={styles.map}
                     region={{
                     latitude: props.locationCoords.latitude,
                     longitude: props.locationCoords.longitude,

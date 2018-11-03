@@ -14,7 +14,7 @@ import 'firebase/database'
 // MQ below
 
 const MQ_KEY="AvgVnMA8ethCWCJijX8T0aDMz0YWzUi9"
-const MQ_SEARCH_URL="http://www.mapquestapi.com/geocoding/v1/address?key=AvgVnMA8ethCWCJijX8T0aDMz0YWzUi9&location="
+const MQ_GEOCODE_URL="http://www.mapquestapi.com/geocoding/v1/address?key=AvgVnMA8ethCWCJijX8T0aDMz0YWzUi9&location="
 
 // firebase functions below
 const getUserMenusURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getUserMenus'
@@ -39,8 +39,8 @@ export default class Main extends Component<props> {
             dummyMenu: {},
             searchTerms: "",
             locationCoords: {
-                latitude: '',
-                longitude: '',
+                latitude: 0,
+                longitude: 0,
             }
         }
         this.textChangeHandler = this.onTextChangeHandler.bind(this)

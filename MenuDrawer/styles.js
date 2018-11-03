@@ -1,3 +1,5 @@
+import {StyleSheet} from 'react-native'
+
 export default styles = {
     navBar: {
         flex: 1,
@@ -22,4 +24,8 @@ export default styles = {
     mapContainer: {
         paddingTop: 15,
     },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
+
 }
