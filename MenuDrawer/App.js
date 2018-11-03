@@ -29,10 +29,10 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
     componentDidMount(){
-        firebaseInit()
-        firebase.database().ref('dummyRestaurants/').on('value', (snapshot)=>{
-            console.log('all menus', snapshot.val())
-        })
+        // firebaseInit()
+        // firebase.database().ref('dummyRestaurants/').on('value', (snapshot)=>{
+        //     console.log('all menus', snapshot.val())
+        // })
         // let name = "Wendy's"
         // let address = "45 S Washington, Denver CO 80209"
         // firebase.database().ref('dummyRestaurants/').orderByKey().equalTo(`${name}`).on('value', (snapshot)=>{
@@ -78,8 +78,9 @@ export default class App extends Component<Props> {
         return (
             <NativeRouter>
                 <ImageBackground blurRadius={15} resizeMode='cover' source={bg} style={styles.container}>
-                    <Route exact path='/' component={Login} />
-                    <Route path='/welcome' component={Main} />
+                    {/* change below for default first scene -- deploy with Login Component at '/' path */}
+                    <Route exact path='/' component={Main} />
+                    {/*<Route path='/welcome' component={Main} />*/}
                 </ImageBackground>
             </NativeRouter>
             );

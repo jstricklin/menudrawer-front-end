@@ -32,15 +32,14 @@ export default class Main extends Component<props> {
         this.state = {
             dummyMenus: [],
             dummyMenu: {},
+            searchTerms: "",
         }
-        // this.getDummyMenu = this.getDummyMenu.bind(this)
+        this.textChangeHandler = this.onTextChangeHandler.bind(this)
         this.getMenu = this.getMenu.bind(this)
     }
-    // getDummyMenu(id){
-    //     fetch(`${baseURL}/menu/${id}`)
-    //         .then(res => res.json())
-    //         .then(json => this.setState({dummyMenu: json}))
-    // }
+    onTextChangeHandler(text){
+        this.setState({ searchTerms: text })
+    }
     getUserMenus(){
         return fetch(getUserMenusURL)
             .then(res => res.json())
@@ -54,10 +53,6 @@ export default class Main extends Component<props> {
     }
     getMenu(name, address){
         console.log('checking menu', name, address)
-        // firebase.database().ref('restaurants/').on('value', function(snapshot){
-        //     console.log('checking..?')
-        //     console.log('snapshot', snapshot.val())
-        // })
 
         fetch(`${getMenuURL}/${name}/${address}`)
             .then(res => res.json())
@@ -70,13 +65,14 @@ export default class Main extends Component<props> {
         }
         this.getUserMenus()
     }
+    // / path should be Welcome for '/'
     render(){
         return (
             <NativeRouter>
                 <View style={styles.container}>
                     <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
-                    <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
-                    <Route path='/search' render={(props)=> <Search {...props} />} />
+                    <Route exact path='/search' render={(props) => <Welcome {...props} /> }/>
+                    <Route path='/' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} />}/>
                     <Navigator />

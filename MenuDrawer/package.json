@@ -11,6 +11,7 @@
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
     "react-native-fontawesome": "^5.7.0",
+    "react-native-maps": "^0.22.0",
     "react-router-native": "^4.3.0",
     "unistore": "^3.1.0"
   },
