@@ -10,22 +10,30 @@ class Menu extends Component {
         }
     }
     componentDidMount(){
-        console.log(this.props.menu)
-        this.props.getDummyMenu(this.props.match.params.id)
+        this.props.getMenu(this.props.match.params.name, this.props.match.params.address)
     }
     componentDidUpdate(){
-        if (this.state.menu !== this.props.menu){
-            this.setState({menu: this.props.menu})
+        if (this.state.menu !== Object.values(this.props.menu)[0]){
+            this.setState({menu: Object.values(this.props.menu)[0]})
+            console.log({menu: Object.values(this.props.menu)[0]})
         }
     }
     render(){
         return (
             <View style={styles.container}>
-                {this.state.menu ? <View style={styles.menu}>
-                    <Text style={styles.title}>{this.state.menu.name}</Text>
-                    <Text>{this.state.menu.address}</Text>
+                <View style={{height:650, backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', alignItems:'center', paddingTop: 15}}>
+                    <Text style={styles.title}> Menu </Text>
+                    {this.state.menu ?
+                    <View style={styles.menu}>
+                        <Text style={styles.title}>{this.state.menu.name}</Text>
+                        <Text style={styles.subtitle}>{this.state.menu.address}</Text>
+                        <Text style={{ color: 'white', alignSelf: 'center' }}>Menu Data</Text>
+                    </View>
+                    : <Text style={styles.title}>Loading Menu...</Text>}
+                    <View>
+
+                    </View>
                 </View>
-                : null}
             </View>
             )
     }
@@ -33,11 +41,13 @@ class Menu extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        width: '100%',
         justifyContent: 'flex-end',
-        alignSelf: 'stretch',
+        height: 650,
         alignItems: 'center',
-        padding: 15,
-        backgroundColor: '#ad6d5d',
+        // padding: 15,
+        // backgroundColor: '#ad6d5d',
     },
     title: {
         color: 'white',
@@ -45,10 +55,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         alignSelf: 'center',
     },
+    subtitle: {
+        color: 'white',
+        fontSize: 15,
+        alignSelf: 'center',
+    },
     menu: {
         alignSelf: 'stretch',
-        alignItems: 'center',
+        // alignItems: 'center',
         color: 'white',
+        marginTop: 15,
         height: 650,
         backgroundColor: '#f4a93f'
     }

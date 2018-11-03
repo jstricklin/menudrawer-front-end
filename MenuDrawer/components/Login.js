@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#00475Di',
+        // backgroundColor: '#00475D',
+        backgroundColor: 'rgba(0, 0, 0, .3)',
     },
     login: {
         fontSize: 20,
