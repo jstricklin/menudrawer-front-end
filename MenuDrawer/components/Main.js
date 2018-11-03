@@ -11,6 +11,11 @@ import firebase from 'firebase'
 import firebaseInit from '../firebase.js'
 import 'firebase/database'
 
+// MQ below
+
+const MQ_KEY="AvgVnMA8ethCWCJijX8T0aDMz0YWzUi9"
+const MQ_SEARCH_URL="http://www.mapquestapi.com/geocoding/v1/address?key=AvgVnMA8ethCWCJijX8T0aDMz0YWzUi9&location="
+
 // firebase functions below
 const getUserMenusURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getUserMenus'
 const getMenuURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getMenu'
@@ -33,9 +38,24 @@ export default class Main extends Component<props> {
             dummyMenus: [],
             dummyMenu: {},
             searchTerms: "",
+            locationCoords: {
+                latitude: '',
+                longitude: '',
+            }
         }
         this.textChangeHandler = this.onTextChangeHandler.bind(this)
         this.getMenu = this.getMenu.bind(this)
+    }
+    getUserLocation = () => {
+        navigator.geolocation.getCurrentPosition(position => {
+            this.setState({ locationCoords:{ latitude: position.coords.latitude, longitude: position.coords.longitude }})
+            console.log(this.state.locationCoords)
+        }, err => console.log(err))
+
+    }
+
+    startSearch(){
+
     }
     onTextChangeHandler(text){
         this.setState({ searchTerms: text })
@@ -63,6 +83,7 @@ export default class Main extends Component<props> {
         if (!firebase.apps.length){
             firebaseInit()
         }
+        this.getUserLocation()
         this.getUserMenus()
     }
     // / path should be Welcome for '/'
@@ -72,7 +93,7 @@ export default class Main extends Component<props> {
                 <View style={styles.container}>
                     <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
                     <Route exact path='/search' render={(props) => <Welcome {...props} /> }/>
-                    <Route path='/' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} />} />
+                    <Route path='/' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} locationCoords={this.state.locationCoords} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} />}/>
                     <Navigator />
