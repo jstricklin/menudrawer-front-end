@@ -12,7 +12,7 @@ const Search = (props) => {
                 <Text style={{color: 'white'}}>
                     {props.searchTerms}
                 </Text>
-                <TouchableHighlight onPress={()=> console.log(process.env)} style={styles.searchBtn}>
+                <TouchableHighlight onPress={props.startSearch} style={styles.searchBtn}>
                     <Text style={styles.btnTxt} >Search</Text>
                 </TouchableHighlight>
 

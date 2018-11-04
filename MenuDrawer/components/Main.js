@@ -13,8 +13,7 @@ import 'firebase/database'
 
 // MQ below
 
-const MQ_KEY="AvgVnMA8ethCWCJijX8T0aDMz0YWzUi9"
-const MQ_GEOCODE_URL="http://www.mapquestapi.com/geocoding/v1/address?key=AvgVnMA8ethCWCJijX8T0aDMz0YWzUi9&location="
+import { MQ_KEY, MQ_GEOCODE_URL, MQ_SEARCH_URL } from 'react-native-dotenv'
 
 // firebase functions below
 const getUserMenusURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getUserMenus'
@@ -38,6 +37,7 @@ export default class Main extends Component<props> {
             dummyMenus: [],
             dummyMenu: {},
             searchTerms: "",
+            mqRestaurants: [],
             locationCoords: {
                 latitude: 0,
                 longitude: 0,
@@ -47,6 +47,7 @@ export default class Main extends Component<props> {
                 longitude: 0,
             }
         }
+        this.startSearch = this.startSearch.bind(this)
         this.textChangeHandler = this.onTextChangeHandler.bind(this)
         this.getMenu = this.getMenu.bind(this)
         this.getMenuCoords = this.getMenuCoords.bind(this)
@@ -67,7 +68,10 @@ export default class Main extends Component<props> {
     }
 
     startSearch(){
-
+        fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=10&q=restaurant`)
+            .then(res => res.json())
+            .then(json => {console.log(json); return json})
+            .then(json => this.setState({ mqRestaurants: json }))
     }
     onTextChangeHandler(text){
         this.setState({ searchTerms: text })
@@ -99,7 +103,7 @@ export default class Main extends Component<props> {
                 <View style={styles.container}>
                     <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
                     <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
-                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} locationCoords={this.state.locationCoords} />} />
+                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} mqRestaurants={this.state.mqRestaurants} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
                     <Navigator />
