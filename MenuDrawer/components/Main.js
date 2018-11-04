@@ -68,10 +68,10 @@ export default class Main extends Component<props> {
     }
 
     startSearch(){
-        fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=10&q=restaurant`)
+        fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20800000&pageSize=50&q=restaurant`)
             .then(res => res.json())
-            .then(json => {console.log(json); return json})
-            .then(json => this.setState({ mqRestaurants: json }))
+            .then(json => {console.log("terms: ", this.state.searchTerms, "results: ", json.results); return json})
+            .then(json => this.setState({ mqRestaurants: json.results }))
     }
     onTextChangeHandler(text){
         this.setState({ searchTerms: text })

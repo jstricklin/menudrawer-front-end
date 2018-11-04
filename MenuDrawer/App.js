@@ -79,8 +79,8 @@ export default class App extends Component<Props> {
             <NativeRouter>
                 <ImageBackground blurRadius={15} resizeMode='cover' source={bg} style={styles.container}>
                     {/* change below for default first scene -- deploy with Login Component at '/' path */}
-                    <Route exact path='/' component={Main} />
-                    {/*<Route path='/welcome' component={Main} />*/}
+                    <Route path='/welcome' component={Main} />
+                    <Route exact path='/' component={Login} />
                 </ImageBackground>
             </NativeRouter>
             );

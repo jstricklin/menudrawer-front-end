@@ -17,6 +17,8 @@ export default styles = {
         height: 25,
         width: 250,
         backgroundColor: '#ad6d5d',
+        marginTop: 15,
+        marginBottom: 15,
     },
     contentContainer: {
         flex: 1,
@@ -32,7 +34,7 @@ export default styles = {
         fontWeight: 'bold',
         alignSelf: 'center',
     },
-    subtitle: {
+   subtitle: {
         color: 'white',
         fontSize: 15,
         alignSelf: 'center',
