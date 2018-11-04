@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import Map from './Map'
 import styles from '../styles'
 
@@ -21,17 +21,21 @@ class Menu extends Component {
     }
     render(){
         return (
-            <View style={styles.container}>
-                <View style={{height:650, backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', alignItems:'center', paddingTop: 15}}>
+            <View style={styles.contentContainer}>
+                <View style={styles.searchContainer}>
                     <Text style={styles.title}> Menu </Text>
                     {this.state.menu ?
                     <View style={styles.menu}>
-                        <Text style={styles.title}>{this.state.menu.name}</Text>
-                        <Text style={styles.subtitle}>{this.state.menu.address}</Text>
-                    <View>
-                        <Map locationCoords={this.props.locationCoords}/>
-                    </View>
+                        <View style={styles.menuHeader}>
+                            <Text style={styles.title}>{this.state.menu.name}</Text>
+                            <Text style={styles.subtitle}>{this.state.menu.address}</Text>
+                        </View>
+                        <ScrollView>
+                        <View style={styles.mapContainer}>
+                            <Map locationCoords={this.props.locationCoords}/>
+                        </View>
                         <Text style={{ color: 'white', alignSelf: 'center' }}>Menu Data</Text>
+                    </ScrollView>
                     </View>
                     : <Text style={styles.title}>Loading Menu...</Text>}
                 </View>

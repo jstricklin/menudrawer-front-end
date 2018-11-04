@@ -64,7 +64,6 @@ export default class Main extends Component<props> {
                 latitude: json.results[0].locations[0].displayLatLng.lat,
                 longitude: json.results[0].locations[0].displayLatLng.lng
             }}))
-            // .then(json => console.log('coords response', json.results[0].locations[0].displayLatLng))
     }
 
     startSearch(){
@@ -77,9 +76,6 @@ export default class Main extends Component<props> {
         return fetch(getUserMenusURL)
             .then(res => res.json())
             .then(json => {
-                // for(let menu in json){
-                //     console.log('menu', json[menu])
-                // }
                 this.setState({ dummyMenus: json.menus});
                 return json.menus
             })
@@ -101,8 +97,8 @@ export default class Main extends Component<props> {
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route exact path='/' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
-                    <Route exact path='/welcome' render={(props) => <Welcome {...props} /> }/>
+                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
+                    <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
                     <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} locationCoords={this.state.locationCoords} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>

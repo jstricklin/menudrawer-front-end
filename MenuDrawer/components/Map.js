@@ -10,9 +10,6 @@ import styles from '../styles'
 const Map = (props) => {
     return (
         <View>
-            <Text style={{color: 'white', alignSelf: 'center'}}>
-                {props.locationCoords.latitude}, {props.locationCoords.longitude}
-            </Text>
             <View style={{ height: 200, width: 200 }}>
                 <MapView style={styles.map}
                     region={{
