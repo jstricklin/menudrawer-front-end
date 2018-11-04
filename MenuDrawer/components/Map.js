@@ -15,7 +15,7 @@ const Map = (props) => {
                     region={{
                     latitude: props.locationCoords.latitude,
                     longitude: props.locationCoords.longitude,
-                    latitudeDelta: .01,
+                    latitudeDelta: .005,
                     longitudeDelta: .01 * ASPECT_RATIO,
                     }}
                 >
