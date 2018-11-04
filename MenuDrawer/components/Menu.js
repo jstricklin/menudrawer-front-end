@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-
+import Map from './Map'
+import styles from '../styles'
 
 class Menu extends Component {
     constructor(props){
@@ -15,7 +16,7 @@ class Menu extends Component {
     componentDidUpdate(){
         if (this.state.menu !== Object.values(this.props.menu)[0]){
             this.setState({menu: Object.values(this.props.menu)[0]})
-            console.log({menu: Object.values(this.props.menu)[0]})
+            this.props.getMenuCoords(Object.values(this.props.menu)[0].address)
         }
     }
     render(){
@@ -27,47 +28,16 @@ class Menu extends Component {
                     <View style={styles.menu}>
                         <Text style={styles.title}>{this.state.menu.name}</Text>
                         <Text style={styles.subtitle}>{this.state.menu.address}</Text>
+                    <View>
+                        <Map locationCoords={this.props.locationCoords}/>
+                    </View>
                         <Text style={{ color: 'white', alignSelf: 'center' }}>Menu Data</Text>
                     </View>
                     : <Text style={styles.title}>Loading Menu...</Text>}
-                    <View>
-
-                    </View>
                 </View>
             </View>
             )
-    }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
-        justifyContent: 'flex-end',
-        height: 650,
-        alignItems: 'center',
-        // padding: 15,
-        // backgroundColor: '#ad6d5d',
-    },
-    title: {
-        color: 'white',
-        fontSize: 25,
-        fontWeight: 'bold',
-        alignSelf: 'center',
-    },
-    subtitle: {
-        color: 'white',
-        fontSize: 15,
-        alignSelf: 'center',
-    },
-    menu: {
-        alignSelf: 'stretch',
-        // alignItems: 'center',
-        color: 'white',
-        marginTop: 15,
-        height: 650,
-        backgroundColor: '#f4a93f'
-    }
-})
+}
 
 export default Menu

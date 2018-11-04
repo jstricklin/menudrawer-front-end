@@ -41,17 +41,30 @@ export default class Main extends Component<props> {
             locationCoords: {
                 latitude: 0,
                 longitude: 0,
+            },
+            menuLocation: {
+                latitude: 0,
+                longitude: 0,
             }
         }
         this.textChangeHandler = this.onTextChangeHandler.bind(this)
         this.getMenu = this.getMenu.bind(this)
+        this.getMenuCoords = this.getMenuCoords.bind(this)
     }
     getUserLocation = () => {
         navigator.geolocation.getCurrentPosition(position => {
             this.setState({ locationCoords:{ latitude: position.coords.latitude, longitude: position.coords.longitude }})
-            console.log(this.state.locationCoords)
         }, err => console.log(err))
 
+    }
+    getMenuCoords(address){
+        fetch(`${MQ_GEOCODE_URL}${address}`)
+            .then(res => res.json())
+            .then(json => this.setState({menuLocation: {
+                latitude: json.results[0].locations[0].displayLatLng.lat,
+                longitude: json.results[0].locations[0].displayLatLng.lng
+            }}))
+            // .then(json => console.log('coords response', json.results[0].locations[0].displayLatLng))
     }
 
     startSearch(){
@@ -72,11 +85,8 @@ export default class Main extends Component<props> {
             })
     }
     getMenu(name, address){
-        console.log('checking menu', name, address)
-
         fetch(`${getMenuURL}/${name}/${address}`)
             .then(res => res.json())
-            .then(json => { console.log('single menu', json); return json })
             .then(json => this.setState({dummyMenu: json}))
     }
     componentDidMount(){
@@ -91,11 +101,11 @@ export default class Main extends Component<props> {
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
-                    <Route exact path='/search' render={(props) => <Welcome {...props} /> }/>
-                    <Route path='/' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} locationCoords={this.state.locationCoords} />} />
+                    <Route exact path='/' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
+                    <Route exact path='/welcome' render={(props) => <Welcome {...props} /> }/>
+                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} locationCoords={this.state.locationCoords} />} />
                     <Route path='/explore' component={Explore} />
-                    <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} />}/>
+                    <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
                     <Navigator />
                 </View>
             </NativeRouter>

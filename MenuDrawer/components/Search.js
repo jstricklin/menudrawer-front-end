@@ -17,7 +17,6 @@ const Search = (props) => {
                 </TouchableHighlight>
 
                 <View style={styles.mapContainer}>
-                    <Map locationCoords={props.locationCoords}  />
                 </View>
             </View>
         </View>
