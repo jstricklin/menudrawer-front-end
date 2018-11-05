@@ -37,6 +37,7 @@ export default class Main extends Component<props> {
         super(props)
         this.state = {
             dummyMenus: [],
+            searchMenus: [],
             dummyMenu: {},
             searchTerms: "",
             mqRestaurants: [],
@@ -74,15 +75,35 @@ export default class Main extends Component<props> {
                 longitude: json.results[0].locations[0].displayLatLng.lng
             }}))
     }
-
-    startSearch(){
+    getMQRestaurants = () => {
         let terms = this.state.searchTerms.split(" ")
         let parsedTerms = terms.map(term => term += "%2C%20").join("")
-        console.log('terms', parsedTerms)
-        fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=50&q=restaurant%2C%20${parsedTerms}`)
+        return fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=50&q=restaurant%2C%20${parsedTerms}`)
             .then(res => res.json())
-            .then(json => {console.log("terms: ", this.state.searchTerms, "results: ", json.results); return json})
-            .then(json => this.setState({ mqRestaurants: json.results }))
+            .then(json => {console.log("terms: ", this.state.searchTerms, "results: ", json.results); return json.results})
+    }
+
+    checkForMenu(restaurant){
+        return fetch(`${getMenuURL}/${restaurant.displayString}`)
+            .then(res => res.json())
+            .then(json => {
+                if (json.error){
+                    console.log(json.error)
+                    this.setState(prevState => ({ mqRestaurants: [...prevState.mqRestaurants, restaurant] }))
+                } else {
+                    console.log(restaurant)
+                    this.setState(prevState => ({ searchMenus: [...prevState.searchMenus, restaurant] }))
+                }
+            })
+
+    }
+    startSearch(){
+        this.setState({
+            mqRestaurants: [],
+            searchMenus: []
+        })
+        this.getMQRestaurants()
+            .then(mqRestArr => mqRestArr.map(restaurant => this.checkForMenu(restaurant)))
     }
     onTextChangeHandler(text){
         this.setState({ searchTerms: text })
@@ -115,9 +136,9 @@ export default class Main extends Component<props> {
                 <View style={styles.container}>
                     <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
                     <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
-                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} mqRestaurants={this.state.mqRestaurants} />} />
+                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} />} />
                     <Route path='/explore' component={Explore} />
-                    <Route path='/menu/:name/:address' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
+                    <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
                     <Navigator />
                 </View>
             </NativeRouter>

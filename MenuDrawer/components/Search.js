@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, TextInput, TouchableHighlight, ScrollView } from 'react-native'
 import Map from './Map'
 import styles from '../styles'
+import MenuThumb from './MenuThumb'
+import { Link } from 'react-router-native'
 
 const Search = (props) => {
     return (
@@ -16,7 +18,10 @@ const Search = (props) => {
                     {props.mqRestaurants.length ? <View style={styles.mapContainer}>
                         <Map locationCoords={props.locationCoords}  />
                     </View> : null}
-
+                    {props.searchMenus.map(restaurant => (<View style={styles.mapContainer} key={restaurant.id}>
+                        <Link to={`/menu/${restaurant.displayString}`}><MenuThumb menu={restaurant} /></Link>
+                        </View>
+                        ))}
                     {props.mqRestaurants.map(restaurant => (<View style={styles.mapContainer} key={restaurant.id}>
                         <Text style={styles.mainTxt}>{restaurant.name}</Text>
                         <Text style={styles.mainTxt}>{restaurant.place.properties.street} </Text>
