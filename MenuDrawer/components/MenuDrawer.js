@@ -2,15 +2,7 @@ import React from 'react'
 import { View, ScrollView, ListView, Text, StyleSheet } from 'react-native'
 import { Link } from 'react-router-native'
 import styles from '../styles'
-
-const MenuThumb = (props) => {
-    return (
-        <View style={styles.menuThumb}>
-            <Text style={styles.mainTxt}>{props.menu.name}</Text>
-            <Text style={styles.mainTxt}>{props.menu.address}</Text>
-        </View>
-        )
-}
+import MenuThumb from './MenuThumb'
 
 const populateMenus = (menus = []) => {
     return menus.map(menu => <Link key={menu.address} to={`/menu/${menu.name}/${menu.address}`} ><MenuThumb menu={menu} /></Link>)

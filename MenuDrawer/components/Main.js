@@ -11,11 +11,13 @@ import firebase from 'firebase'
 import firebaseInit from '../firebase.js'
 import 'firebase/database'
 
+const userID = '12461241'
 // MQ below
 
-import { MQ_KEY, MQ_GEOCODE_URL, MQ_SEARCH_URL } from 'react-native-dotenv'
+import { MQ_KEY, MQ_GEOCODE_URL, MQ_SEARCH_URL, GET_USER_DATA } from 'react-native-dotenv'
 
 // firebase functions below
+
 const getUserMenusURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getUserMenus'
 const getMenuURL = 'https://us-central1-menu-drawer-8c601.cloudfunctions.net/getMenu'
 
@@ -45,12 +47,18 @@ export default class Main extends Component<props> {
             menuLocation: {
                 latitude: 0,
                 longitude: 0,
-            }
+            },
+            userData: { }
         }
         this.startSearch = this.startSearch.bind(this)
         this.textChangeHandler = this.onTextChangeHandler.bind(this)
         this.getMenu = this.getMenu.bind(this)
         this.getMenuCoords = this.getMenuCoords.bind(this)
+    }
+    getUserData = () => {
+        fetch(`${GET_USER_DATA}/${userID}`)
+            .then(res => res.json())
+            .then(json => this.setState({ userData : json.data }))
     }
     getUserLocation = () => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -68,7 +76,10 @@ export default class Main extends Component<props> {
     }
 
     startSearch(){
-        fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20800000&pageSize=50&q=restaurant`)
+        let terms = this.state.searchTerms.split(" ")
+        let parsedTerms = terms.map(term => term += "%2C%20").join("")
+        console.log('terms', parsedTerms)
+        fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=50&q=restaurant%2C%20${parsedTerms}`)
             .then(res => res.json())
             .then(json => {console.log("terms: ", this.state.searchTerms, "results: ", json.results); return json})
             .then(json => this.setState({ mqRestaurants: json.results }))
@@ -94,7 +105,8 @@ export default class Main extends Component<props> {
             firebaseInit()
         }
         this.getUserLocation()
-        this.getUserMenus()
+        this.getUserData()
+        // this.getUserMenus()
     }
     // / path should be Welcome for '/'
     render(){
