@@ -18,11 +18,17 @@ const Search = (props) => {
                     {props.mqRestaurants.length ? <View style={styles.mapContainer}>
                         <Map locationCoords={props.locationCoords}  />
                     </View> : null}
-                    {props.searchMenus.map(restaurant => (<View style={styles.mapContainer} key={restaurant.id}>
+                    {props.searchMenus.map(restaurant => {console.log('restaurant', restaurant);
+                    let restaurantData = { name: restaurant.name, displayString: restaurant.displayString, address: { city: restaurant.city, street: restaurant.street, state: restaurant.street  }}
+
+                    console.log(restaurant)
+
+                        console.log(restaurantData);
+                        return (<View style={styles.mapContainer} key={restaurant.displayString}>
                         <Link to={`/menu/${restaurant.displayString}`}><MenuThumb menu={restaurant} /></Link>
                         </View>
-                        ))}
-                    {props.mqRestaurants.map(restaurant => (<View style={styles.mapContainer} key={restaurant.id}>
+                        )})}
+                    {props.mqRestaurants.map(restaurant => (<View style={styles.mapContainer} key={restaurant.displayString}>
                         <Text style={styles.mainTxt}>{restaurant.name}</Text>
                         <Text style={styles.mainTxt}>{restaurant.place.properties.street} </Text>
                         </View>

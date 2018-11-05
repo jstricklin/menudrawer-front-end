@@ -36,9 +36,9 @@ export default class Main extends Component<props> {
     constructor(props){
         super(props)
         this.state = {
-            dummyMenus: [],
+            menuDrawer: [],
             searchMenus: [],
-            dummyMenu: {},
+            selectedMenu: {},
             searchTerms: "",
             mqRestaurants: [],
             locationCoords: {
@@ -57,9 +57,11 @@ export default class Main extends Component<props> {
         this.getMenuCoords = this.getMenuCoords.bind(this)
     }
     getUserData = () => {
-        fetch(`${GET_USER_DATA}/${userID}`)
+        return fetch(`${GET_USER_DATA}/${userID}`)
             .then(res => res.json())
+            .then(json => { console.log(json); return json })
             .then(json => this.setState({ userData : json.data }))
+            .catch(err => console.log('getUserData error:', err))
     }
     getUserLocation = () => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -74,6 +76,7 @@ export default class Main extends Component<props> {
                 latitude: json.results[0].locations[0].displayLatLng.lat,
                 longitude: json.results[0].locations[0].displayLatLng.lng
             }}))
+            .catch(err => console.log('get menu coords error', err) )
     }
     getMQRestaurants = () => {
         let terms = this.state.searchTerms.split(" ")
@@ -81,6 +84,7 @@ export default class Main extends Component<props> {
         return fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=50&q=restaurant%2C%20${parsedTerms}`)
             .then(res => res.json())
             .then(json => {console.log("terms: ", this.state.searchTerms, "results: ", json.results); return json.results})
+            .catch(err => console.log('mq fetch error', err))
     }
 
     checkForMenu(restaurant){
@@ -88,13 +92,12 @@ export default class Main extends Component<props> {
             .then(res => res.json())
             .then(json => {
                 if (json.error){
-                    console.log(json.error)
                     this.setState(prevState => ({ mqRestaurants: [...prevState.mqRestaurants, restaurant] }))
                 } else {
-                    console.log(restaurant)
                     this.setState(prevState => ({ searchMenus: [...prevState.searchMenus, restaurant] }))
                 }
             })
+            .catch(err => console.log('check for menu error', err))
 
     }
     startSearch(){
@@ -104,41 +107,52 @@ export default class Main extends Component<props> {
         })
         this.getMQRestaurants()
             .then(mqRestArr => mqRestArr.map(restaurant => this.checkForMenu(restaurant)))
+            .catch(err => console.log('get mq resturants error', err) )
     }
     onTextChangeHandler(text){
         this.setState({ searchTerms: text })
     }
     getUserMenus(){
-        return fetch(getUserMenusURL)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({ dummyMenus: json.menus});
-                return json.menus
-            })
+        let userMenuIDs = Object.values(this.state.userData.menuIDs)
+        userMenuIDs.map(id =>
+            fetch(`${getMenuURL}/${id}`)
+                .then(res => {console.log('res', res); return res})
+                .then(res => res.json())
+                .then(json => { console.log(json); return json })
+                .then(json => this.setState(prevState => ({ menuDrawer: [...prevState.menuDrawer, json] })))
+                .catch(err => console.log('get user menus err: ', err))
+        )
+        // return fetch(getUserMenusURL)
+        //     .then(res => res.json())
+        //     .then(json => {
+        //         this.setState({ dummyMenus: json.menus});
+        //         return json.menus
+        //     })
+        //     .catch(err => console.log('get user menus error', err) )
     }
-    getMenu(name, address){
-        fetch(`${getMenuURL}/${name}/${address}`)
+    getMenu(id){
+        return fetch(`${getMenuURL}/${id}`)
             .then(res => res.json())
-            .then(json => this.setState({dummyMenu: json}))
+            .then(json => this.setState({selectedMenu: json}))
+            .catch(err => console.log('get menu error', err))
     }
     componentDidMount(){
         if (!firebase.apps.length){
             firebaseInit()
         }
         this.getUserLocation()
-        this.getUserData()
-        // this.getUserMenus()
+        this.getUserData().then(res => this.getUserMenus()).catch(err => console.log('getusermenuErr', err))
     }
     // / path should be Welcome for '/'
     render(){
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.dummyMenus} />} />
+                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.menuDrawer} />} />
                     <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
                     <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} />} />
                     <Route path='/explore' component={Explore} />
-                    <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.dummyMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
+                    <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.selectedMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
                     <Navigator />
                 </View>
             </NativeRouter>

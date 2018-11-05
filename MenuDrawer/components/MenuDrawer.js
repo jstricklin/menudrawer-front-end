@@ -5,7 +5,7 @@ import styles from '../styles'
 import MenuThumb from './MenuThumb'
 
 const populateMenus = (menus = []) => {
-    return menus.map(menu => <Link key={menu.address} to={`/menu/${menu.name}/${menu.address}`} ><MenuThumb menu={menu} /></Link>)
+    return menus.map(menu => { let menuID = Object.keys(menu)[0]; return <Link key={menuID} to={`/menu/${menuID}`} ><MenuThumb menu={menu} /></Link>})
 }
 
 const MenuDrawer = (props) => {

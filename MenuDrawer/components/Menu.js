@@ -11,12 +11,16 @@ class Menu extends Component {
         }
     }
     componentDidMount(){
-        this.props.getMenu(this.props.match.params.name, this.props.match.params.address)
+        console.log(this.props.match.params.id)
+        this.props.getMenu(this.props.match.params.id)
     }
     componentDidUpdate(){
         if (this.state.menu !== Object.values(this.props.menu)[0]){
+            console.log(Object.values(this.props.menu)[0])
             this.setState({menu: Object.values(this.props.menu)[0]})
-            this.props.getMenuCoords(Object.values(this.props.menu)[0].address)
+            let menuAddy = `${Object.values(this.props.menu)[0].address.street} ${Object.values(this.props.menu)[0].address.city} ${Object.values(this.props.menu)[0].address.zipCode}`
+            console.log(menuAddy)
+            this.props.getMenuCoords(menuAddy)
         }
     }
     render(){
@@ -28,16 +32,17 @@ class Menu extends Component {
                     <View style={styles.menu}>
                         <View style={styles.menuHeader}>
                             <Text style={styles.title}>{this.state.menu.name}</Text>
-                            <Text style={styles.subtitle}>{this.state.menu.address}</Text>
+                            <Text style={styles.subtitle}>{this.state.menu.address.street} {this.state.menu.address.city} {this.state.menu.address.state} </Text>
                         </View>
                         <ScrollView>
                         <View style={styles.mapContainer}>
                             <Map locationCoords={this.props.locationCoords}/>
                         </View>
                         <Text style={{ color: 'white', alignSelf: 'center' }}>Menu Data</Text>
+                        {Object.keys(this.state.menu).map(key => <Text> {this.state.menu[key]}</Text>)}
                     </ScrollView>
                     </View>
-                    : <Text style={styles.title}>Loading Menu...</Text>}
+                    : <Text style={styles.mainTxt}>Loading Menu...</Text>}
                 </View>
             </View>
             )
