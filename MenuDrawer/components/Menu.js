@@ -39,7 +39,6 @@ class Menu extends Component {
                             <Map locationCoords={this.props.locationCoords}/>
                         </View>
                         <Text style={{ color: 'white', alignSelf: 'center' }}>Menu Data</Text>
-                        {Object.keys(this.state.menu).map(key => <Text> {this.state.menu[key]}</Text>)}
                     </ScrollView>
                     </View>
                     : <Text style={styles.mainTxt}>Loading Menu...</Text>}

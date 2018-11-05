@@ -5,7 +5,7 @@ import styles from '../styles'
 import MenuThumb from './MenuThumb'
 
 const populateMenus = (menus = []) => {
-    return menus.map(menu => { let menuID = Object.keys(menu)[0]; return <Link key={menuID} to={`/menu/${menuID}`} ><MenuThumb menu={menu} /></Link>})
+    return menus.map(menu => { console.log('populatemenus menu: ', menu); let menuID = Object.keys(menu)[0]; return <Link key={menuID} to={`/menu/${menuID}`} ><MenuThumb menu={menu} /></Link>})
 }
 
 const MenuDrawer = (props) => {
@@ -21,14 +21,5 @@ const MenuDrawer = (props) => {
         )
 }
 
-// const styles = StyleSheet.create({
-//     container: {
-//         alignSelf: 'stretch',
-//         justifyContent: 'flex-start',
-//         // backgroundColor: '#ad6d5d',
-//         backgroundColor: 'rgba(0,0,0,0.5)',
-//         height: 650,
-//     },
-// })
 
 export default MenuDrawer;

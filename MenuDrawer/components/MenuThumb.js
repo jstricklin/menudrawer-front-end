@@ -10,6 +10,7 @@ const MenuThumb = (props) => {
     return (
         <View style={styles.menuThumb}>
             <Text style={styles.mainTxt}>{menuData.name}</Text>
+            <Text style={styles.mainTxt}>{menuData.address.street} {menuData.address.city} {menuData.address.state} {menuData.address.zipCode}</Text>
         </View>
         )
 }
