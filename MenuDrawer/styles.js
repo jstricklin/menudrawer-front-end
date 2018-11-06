@@ -11,6 +11,12 @@ export default styles = {
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
+    header: {
+        width: '100%',
+        height: 75,
+        backgroundColor: '#ad6d5d',
+        margin: 0,
+    },
     searchBtn: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -26,7 +32,7 @@ export default styles = {
         justifyContent: 'flex-end',
         // height: 650,
         alignItems: 'center',
-        paddingTop: 50,
+        // paddingTop: 50,
     },
     title: {
         color: 'white',

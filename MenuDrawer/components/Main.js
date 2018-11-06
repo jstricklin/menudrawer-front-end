@@ -3,6 +3,7 @@ import { Platform, StyleSheet, Text, View, Button } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native'
 import MenuDrawer from './MenuDrawer'
 import Navigator from './Navigator'
+import Header from './Header'
 import Search from './Search'
 import Explore from './Explore'
 import Menu from './Menu'
@@ -150,8 +151,9 @@ export default class Main extends Component<props> {
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route exact path='/' render={(props) => <MenuDrawer {...props} menus={this.state.menuDrawer} />} />
-                    <Route path='/changeMeTo/' render={(props) => <Welcome {...props} /> }/>
+                    <Header />
+                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.menuDrawer} />} />
+                    <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
                     <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} markerLocations={this.state.markerLocations} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.selectedMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
