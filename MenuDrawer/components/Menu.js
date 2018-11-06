@@ -1,6 +1,22 @@
 import React, {Component} from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
+import Map from './Map'
+import styles from '../styles'
 
+const MenuSection =  (props) => {
+    console.log('section data', props.section)
+    console.log('section name', props.name)
+    return (
+        <View style={styles.menuSection}>
+            <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}> {props.name} </Text>
+            </View>
+            <View style={styles.sectionBody}>
+            {Object.keys(props.section).map(key => <View key={key} style={styles.menuItem}><Text style={styles.menuTxt}>{key}</Text><View style={styles.itemLine}></View><Text style={styles.menuTxt}>${props.section[key].price}</Text></View>)}
+        </View>
+        </View>
+    )
+}
 
 class Menu extends Component {
     constructor(props){
@@ -10,64 +26,47 @@ class Menu extends Component {
         }
     }
     componentDidMount(){
-        this.props.getMenu(this.props.match.params.name, this.props.match.params.address)
+        console.log(this.props.match.params.id)
+        this.props.getMenu(this.props.match.params.id)
     }
     componentDidUpdate(){
         if (this.state.menu !== Object.values(this.props.menu)[0]){
+            console.log(Object.values(this.props.menu)[0])
             this.setState({menu: Object.values(this.props.menu)[0]})
-            console.log({menu: Object.values(this.props.menu)[0]})
+            let menuAddy = `${Object.values(this.props.menu)[0].address.street} ${Object.values(this.props.menu)[0].address.city} ${Object.values(this.props.menu)[0].address.zipCode}`
+            console.log('single menu', Object.values(this.props.menu)[0].menu)
+            this.props.getMenuCoords(menuAddy)
         }
     }
     render(){
         return (
-            <View style={styles.container}>
-                <View style={{height:650, backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', alignItems:'center', paddingTop: 15}}>
-                    <Text style={styles.title}> Menu </Text>
+            <View style={styles.contentContainer}>
+                <View style={styles.menuContainer}>
                     {this.state.menu ?
                     <View style={styles.menu}>
-                        <Text style={styles.title}>{this.state.menu.name}</Text>
-                        <Text style={styles.subtitle}>{this.state.menu.address}</Text>
-                        <Text style={{ color: 'white', alignSelf: 'center' }}>Menu Data</Text>
-                    </View>
-                    : <Text style={styles.title}>Loading Menu...</Text>}
-                    <View>
+                        <View style={styles.menuHeader}>
+                            <Text style={styles.title}>{this.state.menu.name}</Text>
+                            <Text style={styles.subtitle}>{this.state.menu.address.street} {this.state.menu.address.city} {this.state.menu.address.state} </Text>
+                        </View>
+                        <ScrollView>
+                        <View style={styles.mapContainer}>
+                            <Map locationCoords={this.props.locationCoords}/>
+                        </View>
+                        {this.props.menu ?
 
+                        <View>
+                            {
+                            Object.keys(Object.values(this.props.menu)[0].menu).map(section => <MenuSection key={section} name={section} section={Object.values(this.props.menu)[0].menu[section]}  />)}
+                        </View>
+
+                        : null }
+                    </ScrollView>
                     </View>
+                    : <Text style={styles.mainTxt}>Loading Menu...</Text>}
                 </View>
             </View>
             )
-    }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
-        justifyContent: 'flex-end',
-        height: 650,
-        alignItems: 'center',
-        // padding: 15,
-        // backgroundColor: '#ad6d5d',
-    },
-    title: {
-        color: 'white',
-        fontSize: 25,
-        fontWeight: 'bold',
-        alignSelf: 'center',
-    },
-    subtitle: {
-        color: 'white',
-        fontSize: 15,
-        alignSelf: 'center',
-    },
-    menu: {
-        alignSelf: 'stretch',
-        // alignItems: 'center',
-        color: 'white',
-        marginTop: 15,
-        height: 650,
-        backgroundColor: '#f4a93f'
-    }
-})
+}
 
 export default Menu
