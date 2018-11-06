@@ -9,7 +9,6 @@ import styles from '../styles'
 
 const Map = (props) => {
     return (
-        <View>
             <View style={{ height: 200, width: 200 }}>
                 <MapView style={styles.map}
                     region={{
@@ -19,11 +18,15 @@ const Map = (props) => {
                     longitudeDelta: .01 * ASPECT_RATIO,
                     }}
                 >
+                    {props.markerLocations ? props.markerLocations.map(marker => {
+                    return <Marker coordinate={marker} title="rest" description="result" />
+                    })
+                    : null
+                    }
                     <Marker coordinate={props.locationCoords} title="result" description="test desc" />
                 </MapView>
             </View>
 
-        </View>
         )
 }
 

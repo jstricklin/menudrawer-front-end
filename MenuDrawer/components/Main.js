@@ -49,6 +49,7 @@ export default class Main extends Component<props> {
                 latitude: 0,
                 longitude: 0,
             },
+            markerLocations: [],
             userData: { }
         }
         this.startSearch = this.startSearch.bind(this)
@@ -65,11 +66,12 @@ export default class Main extends Component<props> {
     }
     getUserLocation = () => {
         navigator.geolocation.getCurrentPosition(position => {
-            this.setState({ locationCoords:{ latitude: position.coords.latitude, longitude: position.coords.longitude }})
-        }, err => console.log(err))
-
+            let userLoc = new Object({ latitude: position.coords.latitude, longitude: position.coords.longitude })
+            this.setState(prevState => ({ locationCoords:{ latitude: position.coords.latitude, longitude: position.coords.longitude } })
+            )}, err => console.log(err))
     }
     getMenuCoords(address){
+        console.log('fetching menu coords:', address)
         fetch(`${MQ_GEOCODE_URL}${address}`)
             .then(res => res.json())
             .then(json => this.setState({menuLocation: {
@@ -81,7 +83,7 @@ export default class Main extends Component<props> {
     getMQRestaurants = () => {
         let terms = this.state.searchTerms.split(" ")
         let parsedTerms = terms.map(term => term += "%2C%20").join("")
-        return fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=50&q=restaurant%2C%20${parsedTerms}`)
+        return fetch(`${MQ_SEARCH_URL}${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}&sort=distance&feedback=false&key=${MQ_KEY}&circle=${this.state.locationCoords.longitude}%2C%20${this.state.locationCoords.latitude}%2C%20100000&pageSize=10&q=restaurant%2C%20${parsedTerms}`)
             .then(res => res.json())
             .then(json => {console.log("terms: ", this.state.searchTerms, "results: ", json.results); return json.results})
             .catch(err => console.log('mq fetch error', err))
@@ -148,9 +150,9 @@ export default class Main extends Component<props> {
         return (
             <NativeRouter>
                 <View style={styles.container}>
-                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.menuDrawer} />} />
-                    <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
-                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} />} />
+                    <Route exact path='/' render={(props) => <MenuDrawer {...props} menus={this.state.menuDrawer} />} />
+                    <Route path='/changeMeTo/' render={(props) => <Welcome {...props} /> }/>
+                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} markerLocations={this.state.markerLocations} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.selectedMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
                     <Navigator />

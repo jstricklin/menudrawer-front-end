@@ -3,6 +3,21 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import Map from './Map'
 import styles from '../styles'
 
+const MenuSection =  (props) => {
+    console.log('section data', props.section)
+    console.log('section name', props.name)
+    return (
+        <View style={styles.menuSection}>
+            <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}> {props.name} </Text>
+            </View>
+            <View style={styles.sectionBody}>
+            {Object.keys(props.section).map(key => <View key={key} style={styles.menuItem}><Text style={styles.menuTxt}>{key}</Text><View style={styles.itemLine}></View><Text style={styles.menuTxt}>${props.section[key].price}</Text></View>)}
+        </View>
+        </View>
+    )
+}
+
 class Menu extends Component {
     constructor(props){
         super(props)
@@ -19,15 +34,14 @@ class Menu extends Component {
             console.log(Object.values(this.props.menu)[0])
             this.setState({menu: Object.values(this.props.menu)[0]})
             let menuAddy = `${Object.values(this.props.menu)[0].address.street} ${Object.values(this.props.menu)[0].address.city} ${Object.values(this.props.menu)[0].address.zipCode}`
-            console.log(menuAddy)
+            console.log('single menu', Object.values(this.props.menu)[0].menu)
             this.props.getMenuCoords(menuAddy)
         }
     }
     render(){
         return (
             <View style={styles.contentContainer}>
-                <View style={styles.searchContainer}>
-                    <Text style={styles.title}> Menu </Text>
+                <View style={styles.menuContainer}>
                     {this.state.menu ?
                     <View style={styles.menu}>
                         <View style={styles.menuHeader}>
@@ -38,7 +52,14 @@ class Menu extends Component {
                         <View style={styles.mapContainer}>
                             <Map locationCoords={this.props.locationCoords}/>
                         </View>
-                        <Text style={{ color: 'white', alignSelf: 'center' }}>Menu Data</Text>
+                        {this.props.menu ?
+
+                        <View>
+                            {
+                            Object.keys(Object.values(this.props.menu)[0].menu).map(section => <MenuSection key={section} name={section} section={Object.values(this.props.menu)[0].menu[section]}  />)}
+                        </View>
+
+                        : null }
                     </ScrollView>
                     </View>
                     : <Text style={styles.mainTxt}>Loading Menu...</Text>}
