@@ -26,13 +26,14 @@ export default styles = {
         marginTop: 15,
         marginBottom: 15,
     },
+    swipeout: {
+        backgroundColor: '#f4a93f',
+    },
     contentContainer: {
         flex: 1,
         width: '100%',
         justifyContent: 'flex-end',
-        // height: 650,
         alignItems: 'center',
-        // paddingTop: 50,
     },
     title: {
         color: 'white',
@@ -55,7 +56,6 @@ export default styles = {
         alignSelf: 'stretch',
         color: 'white',
         flex: 1,
-        marginTop: 15,
         backgroundColor: '#f4a93f'
     },
     menuHeader: {
@@ -89,6 +89,7 @@ export default styles = {
     menuContainer: {
         flex:1,
         width: '100%',
+
         paddingBottom: 75,
         // paddingLeft: 20,
         // paddingRight: 20,
@@ -122,6 +123,7 @@ export default styles = {
         margin: 10,
         padding: 10,
         backgroundColor: '#f4a93f',
+        alignSelf: 'center'
     },
     sectionHeader: {
         marginLeft:10,

@@ -57,7 +57,26 @@ export default class Main extends Component<props> {
         this.textChangeHandler = this.onTextChangeHandler.bind(this)
         this.getMenu = this.getMenu.bind(this)
         this.getMenuCoords = this.getMenuCoords.bind(this)
+        this.removeMenu = this.removeMenu.bind(this)
     }
+    // ADD TO FIREBASE BELOW
+    removeMenu = (menuID) => {
+        console.log('menu id', this.state.userData.menuIDs)
+        let userMenuID = Object.keys(this.state.userData.menuIDs).filter(key => this.state.userData.menuIDs[key] === menuID)[0]
+        console.log(userMenuID)
+        firebase.database().ref('users/'+this.state.userData.userID+'/menuIDs').child(`${userMenuID}`).remove()
+        this.getUserData().then(res => this.getUserMenus()).catch(err => console.log('getusermenuErr', err))
+        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()).catch(err=> console.log('getUserMenuErr', err)) }, 1000)
+    }
+    addMenu = (menuID) => {
+        console.log('add menuID', menuID)
+        let newUserMenuID = firebase.database().ref('users/'+this.state.userData.userID).child('menuIDs').push().key
+        let updates = {}
+        updates['users/' + this.state.userData.userID+ '/menuIDs/' + newUserMenuID] = menuID
+        return firebase.database().ref().update(updates)
+        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()) }, 1000)
+    }
+    //end send to firebase
     getUserData = () => {
         return fetch(`${GET_USER_DATA}/${userID}`)
             .then(res => res.json())
@@ -152,9 +171,9 @@ export default class Main extends Component<props> {
             <NativeRouter>
                 <View style={styles.container}>
                     <Header />
-                    <Route path='/menus' render={(props) => <MenuDrawer {...props} menus={this.state.menuDrawer} />} />
-                    <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
-                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} markerLocations={this.state.markerLocations} />} />
+                    <Route exact path='/' render={(props) => <MenuDrawer {...props} removeMenu={this.removeMenu} menus={this.state.menuDrawer} />} />
+                    <Route path='/adaw' render={(props) => <Welcome {...props} /> }/>
+                    <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} addMenu={this.addMenu} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} markerLocations={this.state.markerLocations} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.selectedMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
                     <Navigator />
