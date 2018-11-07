@@ -172,8 +172,8 @@ export default class Main extends Component<props> {
             <NativeRouter>
                 <View style={styles.container}>
                     <Header />
-                    <Route exact path='/' render={(props) => <MenuDrawer {...props} removeMenu={this.removeMenu} menus={this.state.menuDrawer} />} />
-                    <Route path='/adaw' render={(props) => <Welcome {...props} /> }/>
+                    <Route exact path='/menus' render={(props) => <MenuDrawer {...props} removeMenu={this.removeMenu} menus={this.state.menuDrawer} />} />
+                    <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
                     <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} addMenu={this.addMenu} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} markerLocations={this.state.markerLocations} />} />
                     <Route path='/explore' component={Explore} />
                     <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.selectedMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
