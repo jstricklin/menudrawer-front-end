@@ -15,9 +15,10 @@ class MenuDrawer extends React.Component{
             menus : []
         }
     }
-    componentWillUpdate(){
+    componentDidUpdate(){
         if (this.state.menus.length !== this.props.menus.length){
-
+            this.setState({menus : []})
+            this.setState({menus: this.props.menus})
         }
     }
     componentDidMount(){
@@ -29,7 +30,7 @@ class MenuDrawer extends React.Component{
                 <View style={styles.menuDrawer}>
                     <Text style={styles.drawerTitle}> Menu Drawer </Text>
                     <ScrollView style={styles.menuContainer}>
-                        {populateMenus(this.props.menus, this.props.removeMenu)}
+                        {populateMenus(this.state.menus, this.props.removeMenu)}
                     </ScrollView>
                 </View>
             </View>

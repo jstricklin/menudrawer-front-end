@@ -78,6 +78,7 @@ export default class Main extends Component<props> {
     }
     //end send to firebase
     getUserData = () => {
+        this.setState({ userData: {} })
         return fetch(`${GET_USER_DATA}/${userID}`)
             .then(res => res.json())
             .then(json => { console.log(json); return json })
