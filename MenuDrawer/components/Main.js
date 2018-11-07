@@ -58,6 +58,7 @@ export default class Main extends Component<props> {
         this.getMenu = this.getMenu.bind(this)
         this.getMenuCoords = this.getMenuCoords.bind(this)
         this.removeMenu = this.removeMenu.bind(this)
+        this.addMenu = this.addMenu.bind(this)
     }
     // ADD TO FIREBASE BELOW
     removeMenu = (menuID) => {
@@ -66,19 +67,19 @@ export default class Main extends Component<props> {
         console.log(userMenuID)
         firebase.database().ref('users/'+this.state.userData.userID+'/menuIDs').child(`${userMenuID}`).remove()
         this.getUserData().then(res => this.getUserMenus()).catch(err => console.log('getusermenuErr', err))
-        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()).catch(err=> console.log('getUserMenuErr', err)) }, 3000)
+        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()).catch(err=> console.log('getUserMenuErr', err)) }, 1000)
     }
     addMenu = (menuID) => {
         console.log('add menuID', menuID)
         let newUserMenuID = firebase.database().ref('users/'+this.state.userData.userID).child('menuIDs').push().key
         let updates = {}
         updates['users/' + this.state.userData.userID+ '/menuIDs/' + newUserMenuID] = menuID
-        return firebase.database().ref().update(updates)
-        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()) }, 1000)
+        firebase.database().ref().update(updates)
+        setTimeout(()=>{ this.getUserData().then(res => {console.log('updating new menu', res); this.getUserMenus()}).catch(err=> console.log('getUserMenuErr', err)) }, 1000)
     }
     //end send to firebase
     getUserData = () => {
-        this.setState({ userData: {} })
+        this.setState({ userData: {}, menuDrawer: [] })
         return fetch(`${GET_USER_DATA}/${userID}`)
             .then(res => res.json())
             .then(json => { console.log(json); return json })
