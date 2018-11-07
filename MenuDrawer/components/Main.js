@@ -42,6 +42,7 @@ export default class Main extends Component<props> {
             selectedMenu: {},
             searchTerms: "",
             mqRestaurants: [],
+            explorerMenus: [],
             locationCoords: {
                 latitude: 0,
                 longitude: 0,
@@ -58,6 +59,8 @@ export default class Main extends Component<props> {
         this.getMenu = this.getMenu.bind(this)
         this.getMenuCoords = this.getMenuCoords.bind(this)
         this.removeMenu = this.removeMenu.bind(this)
+        this.addMenu = this.addMenu.bind(this)
+        this.getExplorerMenus = this.getExplorerMenus.bind(this)
     }
     // ADD TO FIREBASE BELOW
     removeMenu = (menuID) => {
@@ -66,19 +69,19 @@ export default class Main extends Component<props> {
         console.log(userMenuID)
         firebase.database().ref('users/'+this.state.userData.userID+'/menuIDs').child(`${userMenuID}`).remove()
         this.getUserData().then(res => this.getUserMenus()).catch(err => console.log('getusermenuErr', err))
-        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()).catch(err=> console.log('getUserMenuErr', err)) }, 3000)
+        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()).catch(err=> console.log('getUserMenuErr', err)) }, 1000)
     }
     addMenu = (menuID) => {
         console.log('add menuID', menuID)
         let newUserMenuID = firebase.database().ref('users/'+this.state.userData.userID).child('menuIDs').push().key
         let updates = {}
         updates['users/' + this.state.userData.userID+ '/menuIDs/' + newUserMenuID] = menuID
-        return firebase.database().ref().update(updates)
-        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()) }, 1000)
+        firebase.database().ref().update(updates)
+        setTimeout(()=>{ this.getUserData().then(res => {console.log('updating new menu', res); this.getUserMenus()}).catch(err=> console.log('getUserMenuErr', err)) }, 1000)
     }
     //end send to firebase
     getUserData = () => {
-        this.setState({ userData: {} })
+        this.setState({ userData: {}, menuDrawer: [] })
         return fetch(`${GET_USER_DATA}/${userID}`)
             .then(res => res.json())
             .then(json => { console.log(json); return json })
@@ -139,11 +142,11 @@ export default class Main extends Component<props> {
         let userMenuIDs = Object.values(this.state.userData.menuIDs)
         userMenuIDs.map(id =>
             fetch(`${getMenuURL}/${id}`)
-                .then(res => {console.log('res', res); return res})
-                .then(res => res.json())
-                .then(json => { console.log(json); return json })
-                .then(json => this.setState(prevState => ({ menuDrawer: [...prevState.menuDrawer, json] })))
-                .catch(err => console.log('get user menus err: ', err))
+            .then(res => {console.log('res', res); return res})
+            .then(res => res.json())
+            .then(json => { console.log(json); return json })
+            .then(json => this.setState(prevState => ({ menuDrawer: [...prevState.menuDrawer, json] })))
+            .catch(err => console.log('get user menus err: ', err))
         )
         // return fetch(getUserMenusURL)
         //     .then(res => res.json())
@@ -159,12 +162,36 @@ export default class Main extends Component<props> {
             .then(json => this.setState({selectedMenu: json}))
             .catch(err => console.log('get menu error', err))
     }
+    getExplorerMenus(){
+        this.setState({
+            explorerMenus: []
+        })
+        console.log(this.state.locationCoords)
+        this.getMQRestaurants()
+            .then(mqRestArr => mqRestArr.map(restaurant => this.checkForExplorer(restaurant)))
+            .catch(err => console.log('get mq resturants error', err) )
+
+    }
+    checkForExplorer(restaurant){
+        return fetch(`${getMenuURL}/${restaurant.displayString}`)
+            .then(res => res.json())
+            .then(json => {
+                if (json.error){
+                    console.log('no menu')
+                } else {
+                    this.setState(prevState => ({ explorerMenus: [...prevState.explorerMenus, restaurant] }))
+                }
+            })
+            .catch(err => console.log('check for menu error', err))
+
+    }
     componentDidMount(){
         if (!firebase.apps.length){
             firebaseInit()
         }
         this.getUserLocation()
         this.getUserData().then(res => this.getUserMenus()).catch(err => console.log('getusermenuErr', err))
+        setTimeout(()=>{this.getExplorerMenus()}, 1000)
     }
     // / path should be Welcome for '/'
     render(){
@@ -175,7 +202,7 @@ export default class Main extends Component<props> {
                     <Route exact path='/menus' render={(props) => <MenuDrawer {...props} removeMenu={this.removeMenu} menus={this.state.menuDrawer} />} />
                     <Route exact path='/' render={(props) => <Welcome {...props} /> }/>
                     <Route path='/search' render={(props)=> <Search {...props} searchTerms={this.state.searchTerms} textChangeHandler={this.textChangeHandler} addMenu={this.addMenu} startSearch={this.startSearch} locationCoords={this.state.locationCoords} searchMenus={this.state.searchMenus} mqRestaurants={this.state.mqRestaurants} markerLocations={this.state.markerLocations} />} />
-                    <Route path='/explore' component={Explore} />
+                    <Route path='/explore' render={(props) => <Explore {...props} explorerMenus={this.state.explorerMenus} />} />
                     <Route path='/menu/:id' render={(props)=> <Menu {...props} menu={this.state.selectedMenu} getMenu={this.getMenu} getMenuCoords={this.getMenuCoords} locationCoords={this.state.menuLocation}/>}/>
                     <Navigator />
                 </View>

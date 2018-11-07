@@ -30,7 +30,8 @@ class MenuDrawer extends React.Component{
                 <View style={styles.menuDrawer}>
                     <Text style={styles.drawerTitle}> Menu Drawer </Text>
                     <ScrollView style={styles.menuContainer}>
-                        {populateMenus(this.state.menus, this.props.removeMenu)}
+                        {this.state.menus.length ? populateMenus(this.state.menus, this.props.removeMenu)
+                        : <View style={{alignSelf: 'center'}}><Text style={styles.subtitle}> Search or Explore Menus to Add to your Drawer </Text></View>}
                     </ScrollView>
                 </View>
             </View>
