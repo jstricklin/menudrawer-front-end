@@ -8,17 +8,33 @@ const populateMenus = (menus = [], removeMenu) => {
     return menus.map(menu => { console.log('populatemenus menu: ', menu); let menuID = Object.keys(menu)[0]; return <Link key={menuID} to={`/menu/${menuID}`} ><MenuThumb swipeoutBtns={[{ textSize: 5, text: 'Remove', type: 'delete', onPress: ()=>{removeMenu(menuID)} }]} menu={menu} /></Link>})
 }
 
-const MenuDrawer = (props) => {
-    return (
-        <View style={styles.contentContainer}>
+class MenuDrawer extends React.Component{
+    constructor(props) {
+        super(props)
+        this.state = {
+            menus : []
+        }
+    }
+    componentWillUpdate(){
+        if (this.state.menus.length !== this.props.menus.length){
+
+        }
+    }
+    componentDidMount(){
+        this.setState({ menus: this.props.menus })
+    }
+    render(){
+        return (
+            <View style={styles.contentContainer}>
                 <View style={styles.menuDrawer}>
-                <Text style={styles.drawerTitle}> Menu Drawer </Text>
+                    <Text style={styles.drawerTitle}> Menu Drawer </Text>
                     <ScrollView style={styles.menuContainer}>
-                        {populateMenus(props.menus, props.removeMenu)}
+                        {populateMenus(this.props.menus, this.props.removeMenu)}
                     </ScrollView>
                 </View>
-        </View>
-        )
+            </View>
+            )
+    }
 }
 
 

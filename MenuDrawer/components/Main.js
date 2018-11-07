@@ -66,7 +66,7 @@ export default class Main extends Component<props> {
         console.log(userMenuID)
         firebase.database().ref('users/'+this.state.userData.userID+'/menuIDs').child(`${userMenuID}`).remove()
         this.getUserData().then(res => this.getUserMenus()).catch(err => console.log('getusermenuErr', err))
-        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()).catch(err=> console.log('getUserMenuErr', err)) }, 1000)
+        setTimeout(()=>{ this.getUserData().then(res => this.getUserMenus()).catch(err=> console.log('getUserMenuErr', err)) }, 3000)
     }
     addMenu = (menuID) => {
         console.log('add menuID', menuID)
