@@ -7,14 +7,14 @@ export default styles = {
         alignSelf: 'stretch',
         alignItems: 'center',
         position: 'absolute', left: 0, right: 0, bottom: 0,
-        backgroundColor: '#ad6d5d',
+        backgroundColor: 'rgb(65, 88, 109)',
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
     header: {
         width: '100%',
         height: 75,
-        backgroundColor: '#ad6d5d',
+        backgroundColor: 'rgb(65, 88, 109)',
         margin: 0,
     },
     searchBtn: {
@@ -22,12 +22,15 @@ export default styles = {
         justifyContent: 'center',
         height: 25,
         width: 250,
-        backgroundColor: '#ad6d5d',
+        // backgroundColor: '#ad6d5d',
+        backgroundColor: 'rgb(109, 92, 65)',
         marginTop: 15,
         marginBottom: 15,
     },
     swipeout: {
-        backgroundColor: '#f4a93f',
+        // backgroundColor: '#f4a93f',
+        // backgroundColor: 'rgb(84, 141, 163)',
+        backgroundColor: 'rgb(65, 88, 109)',
     },
     contentContainer: {
         flex: 1,
@@ -40,6 +43,11 @@ export default styles = {
         fontSize: 25,
         fontWeight: 'bold',
         alignSelf: 'center',
+    },
+    thumbTitle: {
+        color: 'white',
+        fontSize: 14,
+        fontWeight: 'bold',
     },
    subtitle: {
         color: 'white',
@@ -56,27 +64,45 @@ export default styles = {
         alignSelf: 'stretch',
         color: 'white',
         flex: 1,
-        backgroundColor: '#f4a93f'
+
+        // backgroundColor: 'rgb(109, 92, 65)',
+        // backgroundColor: 'rgb(84, 141, 163)',
     },
     menuHeader: {
         alignItems: 'center',
         alignSelf: 'center',
         padding: 15,
         // marginTop: 15,
-        marginBottom: 15,
+        // marginBottom: 15,
         width: '100%',
         // borderRadius: 5,
-        backgroundColor: '#ad6d5d',
+        // backgroundColor: '#6d5641',
+        // backgroundColor: 'rgb(61, 102, 118)'
     },
     menuDrawer: {
         flex:1,
         width: "100%",
-        backgroundColor: 'rgba(75, 25, 25, 0.6)',
-        borderColor: '#ad6d5d',
-        borderRightWidth: 10,
-        borderLeftWidth:10,
-        borderTopWidth:10,
-        borderBottomWidth: 0,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        // backgroundColor: 'rgba(75, 25, 25, 0.6)',
+        // backgroundColor: 'rgba(65, 88, 109, 0,3)',
+        // borderColor: 'rgb(65, 88, 109)',
+        // borderRightWidth: 10,
+        // borderLeftWidth:10,
+    },
+    explorerContainer: {
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingBottom: 80,
+    },
+    explorerThumb: {
+        alignItems: 'center',
+        width: 250,
+        margin: 10,
+        padding: 10,
+        // backgroundColor: '#f4a93f',
+        backgroundColor: 'rgb(84, 141, 163)',
+
     },
     drawerTitle: {
         alignSelf: 'center',
@@ -97,7 +123,8 @@ export default styles = {
     },
     menuSection: {
         alignSelf: 'center',
-        backgroundColor: "#ad6d5d",
+        // backgroundColor: "#ad6d5d",
+        backgroundColor: '#586d41',
         margin: 5,
         padding: 10,
         borderRadius: 5,
@@ -108,7 +135,8 @@ export default styles = {
         width: 250,
         margin: 10,
         padding: 10,
-        backgroundColor: '#ad6d5d',
+        // backgroundColor: '#ad6d5d',
+        backgroundColor: 'rgb(109, 92, 65)',
     },
     itemLine: {
         borderColor: 'rgba(255,255,255, 0.3)',
@@ -122,7 +150,8 @@ export default styles = {
         width: 250,
         margin: 10,
         padding: 10,
-        backgroundColor: '#f4a93f',
+        // backgroundColor: 'rgb(84, 141, 163)',
+        backgroundColor: 'rgb(65, 88, 109)',
         alignSelf: 'center'
     },
     sectionHeader: {
@@ -162,7 +191,8 @@ export default styles = {
         // marginBottom: 15,
         width: '80%',
         borderRadius: 5,
-        backgroundColor: '#ad6d5d',
+        // backgroundColor: '#ad6d5d',
+        backgroundColor: 'rgb(109, 92, 65)',
     },
     mapContainer: {
         alignItems: 'center',
@@ -172,7 +202,8 @@ export default styles = {
         marginBottom: 15,
         width: '80%',
         borderRadius: 5,
-        backgroundColor: '#ad6d5d',
+        // backgroundColor: '#ad6d5d',
+        backgroundColor: '#586d41',
     },
     map: {
         ...StyleSheet.absoluteFillObject,
