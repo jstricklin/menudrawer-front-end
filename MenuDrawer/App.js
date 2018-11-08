@@ -34,9 +34,21 @@ export default class App extends Component<Props> {
     constructor(props){
         super(props)
         this.state = {
-
+            isAuthenticated: false,
+            userID: '',
+            accessToken: '',
         }
-        // onLogin = onLogin.bind(this)
+        this.handleLogin = this.handleLogin.bind(this)
+
+    }
+    handleLogin =()=> {
+        onLogin()
+            .then(res => {
+                console.log('app.js res: ', res);
+                if (res.accessToken){
+                    this.setState({ isAuthenticated: true,  userID: res.idToken, accessToken: res.accessToken })
+                }
+            })
     }
     componentDidMount(){
 
@@ -46,8 +58,8 @@ export default class App extends Component<Props> {
             <NativeRouter>
                 <ImageBackground blurRadius={15} resizeMode='cover' source={bg} style={styles.container}>
                     {/* change below for default first scene -- deploy with Login Component at '/' path */}
-                    <Route path='/welcome' component={Main} />
-                    <Route exact path='/' render={ (props)=> <Login {...props} onLogin={onLogin} /> } />
+                    { this.state.isAuthenticated ? <Route path='/' component={Main} /> :
+                    <Route exact path='/' render={ (props)=> <Login {...props} onLogin={this.handleLogin} /> } /> }
                 </ImageBackground>
             </NativeRouter>
             );
