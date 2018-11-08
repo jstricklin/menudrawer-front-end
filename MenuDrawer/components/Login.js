@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         padding: 3,
         borderRadius: 3,
-        backgroundColor: 'skyblue',
+        backgroundColor: 'rgb(109, 92, 65)',
     },
     title: {
         alignSelf: 'center',
         fontSize: 50,
         marginBottom: 50,
-        fontWeight: 'bold',
+        fontWeight: '300',
         color: '#ffffff'
     }
 });
