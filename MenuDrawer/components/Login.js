@@ -9,7 +9,7 @@ export default class Login extends Component<props> {
                 <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', paddingTop:50, paddingBottom:50, width: '100%' }}>
                     <Text style={styles.title}>Menu Drawer</Text>
                     <View style={styles.loginBtn}>
-                        <Link to='/welcome' ><View style={styles.loginBtn}><Text style={styles.login}>Login or Signup</Text></View></Link>
+                        <View style={styles.loginBtn}><Text style={styles.login}>Login or Signup</Text></View>
                     </View>
                 </View>
             </View>
