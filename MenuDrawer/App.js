@@ -19,6 +19,8 @@ import firebase from 'firebase'
 import firebaseInit from './firebase.js'
 import 'firebase/database'
 
+// auth below
+import { onLogin } from './auth'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -29,6 +31,25 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+    constructor(props){
+        super(props)
+        this.state = {
+            isAuthenticated: false,
+            userID: '',
+            accessToken: '',
+        }
+        this.handleLogin = this.handleLogin.bind(this)
+
+    }
+    handleLogin =()=> {
+        onLogin()
+            .then(res => {
+                console.log('app.js res: ', res);
+                if (res.accessToken){
+                    this.setState({ isAuthenticated: true,  userID: res.idToken, accessToken: res.accessToken })
+                }
+            })
+    }
     componentDidMount(){
 
     }
@@ -37,8 +58,8 @@ export default class App extends Component<Props> {
             <NativeRouter>
                 <ImageBackground blurRadius={15} resizeMode='cover' source={bg} style={styles.container}>
                     {/* change below for default first scene -- deploy with Login Component at '/' path */}
-                    <Route path='/welcome' component={Main} />
-                    <Route exact path='/' component={Login} />
+                    { this.state.isAuthenticated ? <Route path='/' component={Main} /> :
+                    <Route exact path='/' render={ (props)=> <Login {...props} onLogin={this.handleLogin} /> } /> }
                 </ImageBackground>
             </NativeRouter>
             );

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Button } from 'react-native';
+import { Platform, TouchableHighlight, StyleSheet, Text, View, Button } from 'react-native';
 import { Link } from 'react-router-native'
+import {AUTH_DOMAIN, AUTH_CLIENT_ID} from 'react-native-dotenv'
+
+// import auth0 from 'react-native-auth0'
+// const auth0 = new Auth0({ domain: AUTH_DOMAIN, clientId: AUTH_CLIENT_ID  })
 
 export default class Login extends Component<props> {
     render(){
@@ -9,7 +13,7 @@ export default class Login extends Component<props> {
                 <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', paddingTop:50, paddingBottom:50, width: '100%' }}>
                     <Text style={styles.title}>Menu Drawer</Text>
                     <View style={styles.loginBtn}>
-                        <Link to='/welcome' ><View style={styles.loginBtn}><Text style={styles.login}>Login or Signup</Text></View></Link>
+                        <TouchableHighlight onPress={this.props.onLogin}><Text style={styles.login}>Login or Signup</Text></TouchableHighlight>
                     </View>
                 </View>
             </View>
@@ -31,7 +35,6 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     loginBtn: {
-        fontSize: 5,
         alignSelf: 'center',
         padding: 3,
         borderRadius: 3,
