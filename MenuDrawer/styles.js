@@ -68,10 +68,18 @@ export default styles = {
         // backgroundColor: 'rgb(109, 92, 65)',
         // backgroundColor: 'rgb(84, 141, 163)',
     },
+    menuAddBtn: {
+        backgroundColor: 'rgb(65, 88, 109)',
+        padding: 5,
+        margin: 5,
+        borderRadius: 5,
+    },
     menuHeader: {
         alignItems: 'center',
         alignSelf: 'center',
+        justifyContent: 'center',
         padding: 15,
+        flexDirection:'row',
         // marginTop: 15,
         // marginBottom: 15,
         width: '100%',
