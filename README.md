@@ -28,3 +28,4 @@ OCR (Optical Character Recognition) using an API such as Google Vision to allow 
 
 ![Menu Drawer Vid](https://github.com/jstricklin/menudrawer-front-end/blob/master/capstone-vid-03.gif)
 ![Menu Drawer Vid](https://github.com/jstricklin/menudrawer-front-end/blob/master/capstone-vid-02.gif)
+![Menu Drawer Vid](https://github.com/jstricklin/menudrawer-front-end/blob/master/capstone-vid-01.gif)
