@@ -26,6 +26,5 @@ OCR (Optical Character Recognition) using an API such as Google Vision to allow 
 
 #### Media
 
-![Menu Drawer](https://github.com/jstricklin/menudrawer-front-end/blob/master/menu-buddy-screen.png)
 ![Menu Drawer Vid](https://github.com/jstricklin/menudrawer-front-end/blob/master/capstone-vid-03.gif)
 ![Menu Drawer Vid](https://github.com/jstricklin/menudrawer-front-end/blob/master/capstone-vid-02.gif)
